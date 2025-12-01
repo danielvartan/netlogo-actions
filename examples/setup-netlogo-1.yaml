@@ -1,0 +1,55 @@
+on:
+  push:
+    branches: [main, master]
+
+name: "setup-netlogo: Running Experiments"
+
+jobs:
+  NetLogo-check:
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup NetLogo
+        uses: danielvartan/netlogo-actions/setup@v1
+
+      - name: Run Experiment 1
+        run: |
+          MODEL_PATH="$NETLOGO_HOME/models/Sample Models/Biology"
+          MODEL_FILE="Wolf Sheep Predation.nlogox"
+
+          netlogo \
+            --headless \
+            --model "$MODEL_PATH/$MODEL_FILE" \
+            --experiment "Wolf Sheep Crossing" \
+            --table /tmp/output-1.csv
+
+          cat /tmp/output-1.csv
+
+      - name: Run Experiment 2
+        run: |
+          MODEL_PATH="$NETLOGO_HOME/models/Curricular Models/GenEvo"
+          MODEL_FILE="Synthetic Biology - Genetic Switch.nlogox"
+
+          netlogo \
+            --headless \
+            --model "$MODEL_PATH/$MODEL_FILE" \
+            --experiment "Sample-Experiment" \
+            --table /tmp/output-2.csv
+
+          cat /tmp/output-2.csv
+
+      - name: Run Experiment 3
+        run: |
+          MODEL_PATH="$NETLOGO_HOME/models/IABM Textbook/chapter 6"
+          MODEL_FILE="Spread of Disease.nlogox"
+
+          netlogo \
+            --headless \
+            --model "$MODEL_PATH/$MODEL_FILE" \
+            --experiment "population-density" \
+            --table /tmp/output-3.csv
+
+          cat /tmp/output-3.csv

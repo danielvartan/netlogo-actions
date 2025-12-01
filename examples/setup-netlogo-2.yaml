@@ -1,0 +1,31 @@
+on:
+  push:
+    branches: [main, master]
+
+name: "setup-netlogo: Using Other NetLogo Versions"
+
+jobs:
+  NetLogo-check:
+    runs-on: ubuntu-latest
+    permissions: read-all
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup NetLogo 6.4.0
+        uses: danielvartan/netlogo-actions/setup@v1
+        with:
+          version: '6.4.0'
+
+      - name: Run Experiment
+        run: |
+          MODEL_PATH="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
+          MODEL_FILE="Voting Sensitivity Analysis.nlogo"
+
+          netlogo \
+            --headless \
+            --model "$MODEL_PATH/$MODEL_FILE" \
+            --experiment "sensitivity-experiment" \
+            --table /tmp/output.csv
+
+          cat /tmp/output.csv
