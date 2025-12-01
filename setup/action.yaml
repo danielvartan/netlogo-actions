@@ -43,17 +43,27 @@ runs:
         NETLOGO_TAR="/tmp/NetLogo-${{inputs.version}}-${{inputs.architecture}}.tgz"
         NETLOGO_HOME="/opt/NetLogo-${{inputs.version}}"
 
-        sudo mkdir -p /tmp/netlogo-extract
-        sudo tar -xzf "${NETLOGO_TAR}" -C /tmp/netlogo-extract
-
-        EXTRACTED_DIR=$( \
-          find /tmp/netlogo-extract -name "NetLogo_Console" -type f \
+        CONSOLE_PATH=$( \
+          tar -tzf "${NETLOGO_TAR}" \
+          | grep "_Console$" \
           | head -1 \
-          | xargs dirname \
         )
 
-        sudo mv "${EXTRACTED_DIR}" "${NETLOGO_HOME}"
-        sudo rm -rf /tmp/netlogo-extract
+        if [ -z "${CONSOLE_PATH}" ]; then
+          echo "Error: NetLogo_Console not found in tarball"
+          exit 1
+        fi
+
+        EXTRACTED_DIR=$(dirname "${CONSOLE_PATH}")
+
+        sudo mkdir -p "${NETLOGO_HOME}"
+
+        if [ "${EXTRACTED_DIR}" = "." ]; then
+          sudo tar -xzf "${NETLOGO_TAR}" -C "${NETLOGO_HOME}"
+        else
+          sudo tar -xzf "${NETLOGO_TAR}" -C "${NETLOGO_HOME}" --strip-components=1
+        fi
+
         rm -f "${NETLOGO_TAR}"
       shell: bash
 
