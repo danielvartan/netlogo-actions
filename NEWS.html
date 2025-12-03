@@ -122,14 +122,29 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="netlogo-actions-1.0.0-2025-12-01" class="level1">
-<h1>netlogo-actions 1.0.0 (2025-12-01)</h1>
+<section id="v1.1.0-2025-12-03" class="level1">
+<h1>v1.1.0 (2025-12-03)</h1>
+<ul>
+<li><p><code>[setup-netlogo]</code> now supports <code>'release'</code> as input for the <code>version</code> argument, which downloads the latest NetLogo release.</p></li>
+<li><p><code>[setup-netlogo]</code> now downloads NetLogo from the <a href="https://github.com/NetLogo/NetLogo/releases">NetLogo GitHub releases</a> instead of ccl.northwestern.edu, improving reliability and speed.</p></li>
+<li><p><code>[setup-netlogo]</code> now supports only NetLogo versions 6.4.0 and above. This limitation is due to the fact that older versions are not available on the NetLogo GitHub releases page.</p></li>
+<li><p><code>[setup-netlogo]</code> now follows the <a href="https://google.github.io/styleguide/shellguide.html">Google Shell Style Guide</a>.</p></li>
+<li><p><code>[setup-netlogo]</code> now has more informative and less verbose log output.</p></li>
+<li><p><code>[setup-netlogo]</code> now exports a <code>NETLOGO_VERSION</code> environment variable.</p></li>
+<li><p><code>[setup-netlogo]</code> now includes argument checks and error handling.</p></li>
+<li><p><code>[setup-netlogo]</code> now tests NetLogo with <code>--headless --version</code> instead of <code>--help</code>, avoiding possible errors regarding missing GUI dependencies.</p></li>
+<li><p>The workflow examples were improved to reflect the changes above.</p></li>
+<li><p>The documentation was updated to reflect the changes above.</p></li>
+</ul>
+</section>
+<section id="v1.0.0-2025-12-01" class="level1">
+<h1>v1.0.0 (2025-12-01)</h1>
 <ul>
 <li>First release! 🎉</li>
 </ul>
 </section>
-<section id="netlogo-actions-0.0.0.9000" class="level1">
-<h1>netlogo-actions 0.0.0.9000</h1>
+<section id="v0.0.0.9000" class="level1">
+<h1>v0.0.0.9000</h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes.</li>
 </ul>
