@@ -14,11 +14,10 @@ jobs:
       - name: Check Out Repository Code
         uses: actions/checkout@v4
 
-      - name: Update Ubuntu packages
-        run: sudo apt-get update
-
       - name: Install Dependencies
         run: |
+          # Install Dependencies
+          sudo apt-get update
           sudo apt-get install -y \
             libfontconfig1-dev pandoc
 
@@ -31,6 +30,7 @@ jobs:
       - name: Check If renv is Initialized
         id: renv-check
         run: |
+          # Check If renv is Initialized
           if [ -f "renv.lock" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
@@ -40,6 +40,7 @@ jobs:
       - name: Install and Initialize renv
         if: steps.renv-check.outputs.exists == 'false'
         run: |
+          # Install and Initialize renv
           install.packages("renv")
           renv::init()
         shell: Rscript {0}
@@ -47,6 +48,7 @@ jobs:
       - name: Install logolink
         if: steps.renv-check.outputs.exists == 'false'
         run: |
+          # Install logolink
           renv::install("danielvartan/logolink")
           renv::snapshot()
         shell: Rscript {0}
@@ -58,7 +60,9 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Render Quarto
-        run: quarto render
+        run: |
+          # Render Quarto
+          quarto render
 
       - name: Deploy to GitHub Pages
         if: github.event_name != "pull_request"

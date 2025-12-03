@@ -18,6 +18,7 @@ jobs:
 
       - name: Run Experiment 1
         run: |
+          # Run Experiment 1
           model_dir="$NETLOGO_HOME/models/Sample Models/Biology"
           model_file="Wolf Sheep Predation.nlogox"
           experiment_name="Wolf Sheep Crossing"
@@ -33,6 +34,7 @@ jobs:
 
       - name: Run Experiment 2
         run: |
+          # Run Experiment 2
           model_dir="$NETLOGO_HOME/models/Curricular Models/GenEvo"
           model_file="Synthetic Biology - Genetic Switch.nlogox"
           experiment_name="Sample-Experiment"
@@ -48,6 +50,7 @@ jobs:
 
       - name: Run Experiment 3
         run: |
+          # Run Experiment 3
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 6"
           model_file="Spread of Disease.nlogox"
           experiment_name="population-density"

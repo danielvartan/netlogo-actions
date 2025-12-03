@@ -27,6 +27,7 @@ runs:
   steps:
     - name: Validate Arguments
       run: |
+        # Validate Arguments
         if [[ ! "${{inputs.version}}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]] && \
            [[ "${{inputs.version}}" != "release" ]]; then
           echo \
@@ -61,6 +62,7 @@ runs:
 
     - name: Install Dependencies
       run: |
+        # Install Dependencies
         sudo apt-get update
         sudo apt-get install -y curl wget tar
       shell: bash
@@ -68,6 +70,7 @@ runs:
     - name: Get NetLogo Version
       id: netlogo-version
       run: |
+        # Get NetLogo Version
         if [[ "${{inputs.version}}" == "release" ]]; then
           NETLOGO_VERSION=$( \
             curl -s \
@@ -101,6 +104,7 @@ runs:
     - name: Download NetLogo
       if: inputs.cache != 'true' || steps.netlogo-cache.outputs.cache-hit != 'true'
       run: |
+        # Download NetLogo
         release_api_url=$(
           printf "%s%s" \
             "https://api.github.com/repos/NetLogo/NetLogo/releases/tags/" \
@@ -139,6 +143,7 @@ runs:
     - name: Install NetLogo
       if: inputs.cache != 'true' || steps.netlogo-cache.outputs.cache-hit != 'true'
       run: |
+        # Install NetLogo
         NETLOGO_HOME="/opt/NetLogo-${NETLOGO_VERSION}"
 
         netlogo_console_path=$( \
@@ -170,8 +175,9 @@ runs:
         rm -f "${NETLOGO_TAR}"
       shell: bash
 
-    - name: Set Variables and PATH
+    - name: Set Environment Variables and PATH
       run: |
+        # Set Environment Variables and PATH
         NETLOGO_HOME="/opt/NetLogo-${NETLOGO_VERSION}"
 
         echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
@@ -182,6 +188,7 @@ runs:
 
     - name: Create Symbolic Links
       run: |
+        # Create Symbolic Links
         sudo ln -sf \
           "${NETLOGO_HOME}/bin/NetLogo" \
           /usr/local/bin/NetLogo
@@ -192,5 +199,7 @@ runs:
       shell: bash
 
     - name: Test NetLogo Installation
-      run: netlogo --headless --version
+      run: |
+        # Test NetLogo Installation
+        netlogo --headless --version
       shell: bash

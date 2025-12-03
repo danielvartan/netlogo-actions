@@ -27,6 +27,7 @@ jobs:
 
       - name: Test NetLogo Installation
         run: |
+          # Test NetLogo Installation
           if [[ "${{ matrix.version }}" =~ ^([0-6]+) ]]; then
             model_ext="nlogo"
           else

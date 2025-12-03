@@ -20,6 +20,7 @@ jobs:
 
       - name: Run Experiment
         run: |
+          # Run Experiment
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
           model_file="Voting Sensitivity Analysis.nlogo"
           experiment_name="sensitivity-experiment"
