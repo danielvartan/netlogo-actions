@@ -2,7 +2,9 @@ on:
   push:
     branches: [main, master]
 
-name: 'setup-netlogo'
+name: "setup-netlogo-test"
+description: "Test workflow for setup-netlogo action."
+
 permissions: read-all
 
 jobs:
@@ -10,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ['6.4.0', '7.0.2']
-        cache: ['true', 'false']
+        version: ["7.0.0", "7.0.2"] # 6.4.0
+        cache: ["true", "false"]
     name: NetLogo ${{ matrix.version }} (cache=${{ matrix.cache }})
     steps:
       - name: Check out repository code
