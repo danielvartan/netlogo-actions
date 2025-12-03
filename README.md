@@ -9,7 +9,9 @@
 
 ## Overview
 
-This repository provides [GitHub Actions](https://github.com/features/actions) for running [NetLogo](https://ccl.northwestern.edu/netlogo/) simulations. You can use it to automate testing and execution of NetLogo models within GitHub workflows.
+`netlogo-actions` is a collection of [GitHub Actions](https://github.com/features/actions) designed to simplify the setup and execution of [NetLogo](https://ccl.northwestern.edu/netlogo/) models within GitHub workflows.
+
+These actions enable researchers and developers to automate NetLogo installation, run simulations, and integrate NetLogo with other tools such as [Quarto](https://quarto.org/) and [`logolink`](https://danielvartan.github.io/logolink/). By using these actions, users can streamline computational modeling workflows, enhance reproducibility, and efficiently manage complex simulations in a CI/CD environment.
 
 Currently, the repository includes only the [`setup-netlogo`](setup/action.yaml) action, which installs NetLogo on the runner machine. See the [`examples`](examples) directory for workflow examples. You can also see `setup-netlogo` in action by checking this repository's [actions](https://github.com/danielvartan/netlogo-actions/actions) page.
 
