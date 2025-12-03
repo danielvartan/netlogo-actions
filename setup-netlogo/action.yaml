@@ -60,13 +60,6 @@ runs:
         fi
       shell: bash
 
-    - name: Install Dependencies
-      run: |
-        # Install Dependencies
-        sudo apt-get update
-        sudo apt-get install -y curl wget tar
-      shell: bash
-
     - name: Get NetLogo Version
       id: netlogo-version
       run: |
@@ -175,9 +168,9 @@ runs:
         rm -f "${NETLOGO_TAR}"
       shell: bash
 
-    - name: Set Environment Variables and PATH
+    - name: Set Environment Variables
       run: |
-        # Set Environment Variables and PATH
+        # Set Environment Variables
         NETLOGO_HOME="/opt/NetLogo-${NETLOGO_VERSION}"
 
         echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"

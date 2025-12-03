@@ -7,7 +7,7 @@ name: "Test setup-netlogo"
 permissions: read-all
 
 jobs:
-  setup-netlogo:
+  test-setup-netlogo:
     runs-on: ubuntu-latest
     strategy:
       matrix:

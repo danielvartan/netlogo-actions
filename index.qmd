@@ -1,8 +1,8 @@
-# Wolf Sheep Predation
-
 ## Overview
 
-This document is used to test the [netlogo-actions](https://github.com/danielvartan/netlogo-check) [GitHub Actions](https://github.com/features/actions/) under the different experiments set in the *Wolf Sheep Predation* model, included in NetLogo along with the *Sample Models* library.
+This document presents the output of a [GitHub Action](https://github.com/features/actions) workflow that sets up NetLogo and runs experiments using [Quarto](https://quarto.org/) and the [`logolink`](https://danielvartan.github.io/logolink/) R package.
+
+See the repository [README](https://github.com/danielvartan/netlogo-actions#netlogo-actions) for more details.
 
 ## Set the Environment
 
@@ -17,9 +17,27 @@ library(ggplot2)
 library(logolink) # github.com/danielvartan/logolink
 ```
 
+### Set `ggplot2` Theme
+
+```{r}
+theme_set(
+  theme_bw() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.frame = element_blank(),
+      legend.ticks = element_line(color = "white")
+    )
+)
+```
+
+## Wolf Sheep Predation Model
+
 ### Set Model Path
 
 ```{r}
+#| label: Wolf Sheep Predation Model
+
 model_path <-
   find_netlogo_home() |>
   file.path(
@@ -30,7 +48,7 @@ model_path <-
   )
 ```
 
-## Create Experiment
+### Create Experiment
 
 ```{r}
 #| label: Create Experiment
@@ -63,7 +81,7 @@ setup_file <- create_experiment(
 )
 ```
 
-## Run Experiment
+### Run Experiment
 
 ```{r}
 #| label: Run Experiment
@@ -78,13 +96,17 @@ results <-
 results |> glimpse()
 ```
 
-## Analyze Results
+```{r}
+results
+```
+
+### Plot Results
 
 ```{r}
 #| label: Analyze the Results
 #| output: false
 
-data <-
+plot_data <-
   results |>
   summarize(
     across(everything(), ~ mean(.x, na.rm = TRUE)),
@@ -94,7 +116,7 @@ data <-
 ```
 
 ```{r}
-data |>
+plot_data |>
   mutate(number_of_wolves = as.factor(number_of_wolves)) |>
   ggplot(
     aes(
@@ -104,10 +126,257 @@ data |>
       color = number_of_wolves
     )
   ) +
-    labs(
-      x = "Time Step",
-      y = "Average Number of Sheep",
-      color = "Wolves"
-    ) +
+  labs(
+    x = "Time Step",
+    y = "Average Number of Sheep",
+    color = "Wolves"
+  ) +
   geom_line()
+```
+
+## Spread of Disease Model
+
+### Set Model Path
+
+```{r}
+#| label: Spread of Disease Model
+
+model_path <-
+  find_netlogo_home() |>
+  file.path(
+    "models",
+    "IABM Textbook",
+    "chapter 6",
+    "Spread of Disease.nlogox"
+  )
+```
+
+### Create Experiment
+
+```{r}
+setup_file <- create_experiment(
+  name = "Population Density (Runtime)",
+  repetitions = 10,
+  sequential_run_order = TRUE,
+  run_metrics_every_step = TRUE,
+  setup = "setup",
+  go = "go",
+  post_run = NULL,
+  post_experiment = NULL,
+  time_limit = 1000,
+  exit_condition = NULL,
+  metrics = c(
+    'count turtles with [infected?]'
+  ),
+  run_metrics_condition = NULL,
+  constants = list(
+    "variant" = "mobile",
+    "num-people" = list(
+      first = 50,
+      step = 50,
+      last = 200
+    ),
+    "connections-per-node" = 4.1,
+    "num-infected" = 1,
+    "disease-decay" = 0
+  )
+)
+```
+
+```{r}
+setup_file |> inspect_experiment_file()
+```
+
+### Run Experiment
+
+```{r}
+results <-
+  model_path |>
+  run_experiment(setup_file = setup_file)
+```
+
+```{r}
+results |> glimpse()
+```
+
+```{r}
+results
+```
+
+### Tidy Data
+
+```{r}
+data <-
+  results |>
+  rename(infected = count_turtles_with_infected) |>
+  mutate(
+    variant = as.factor(variant),
+    frac_infected = infected / num_people
+  ) |>
+  arrange(run_number, num_infected, step)
+```
+
+```{r}
+data |> glimpse()
+```
+
+### Plot Data
+
+```{r}
+data |>
+  mutate(num_people = as.factor(num_people)) |>
+  ggplot(
+    aes(
+      x = step,
+      y = frac_infected,
+      color = num_people
+    )
+  ) +
+  geom_point(
+    aes(shape = num_people),
+    size = 1,
+    alpha = 0.75
+  ) +
+  labs(
+    x = "Steps",
+    y = "Fraction of Infected",
+    title = "Infected Over Time",
+    color = "People",
+    shape = "People"
+  ) +
+  scale_x_continuous(breaks = seq(0, max(data$step), 100))
+```
+
+```{r}
+plot <-
+  data |>
+  ggplot(
+    aes(
+      x = step,
+      y = frac_infected, # infected
+      color = as.factor(num_people)
+    )
+  ) +
+  labs(
+    x = "Steps",
+    y = "Fraction of Infected",
+    title = "Infected Over Time",
+    color = "People"
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, max(data$step), 100)
+  )
+
+data_i <-
+  data |>
+  group_by(num_people, run_number) |>
+  group_split()
+
+for (i in data_i) {
+  plot <-
+    plot +
+    geom_line(
+      data = i,
+      aes(x = step, y = frac_infected),
+      linewidth = 1,
+      alpha = 0.75
+    )
+}
+
+plot
+```
+
+### Summarize Data
+
+```{r}
+summarized_data <-
+  data |>
+  select(num_people, step, infected, frac_infected) |>
+  summarize(
+    mean = mean(frac_infected, na.rm = TRUE),
+    sd = sd(frac_infected, na.rm = TRUE),
+    .by = c(num_people, step)
+  ) |>
+  arrange(num_people, step)
+```
+
+```{r}
+summarized_data |> glimpse()
+```
+
+```{r}
+summarized_data
+```
+
+### Plot Summarized Data with SD Error Bars
+
+```{r}
+summarized_data |>
+  filter(step %% 10 == 0) |>
+  ggplot(
+    aes(
+      x = step,
+      y = mean,
+      color = as.factor(num_people)
+    )
+  ) +
+  geom_point(
+    aes(shape = as.factor(num_people)),
+    size = 1,
+    alpha = 0.75
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = mean + sd,
+      ymax = mean - sd
+    ),
+    width = 5
+  ) +
+  geom_line() +
+  labs(
+    title = "Infected Over Time",
+    x = "Steps",
+    y = "Fraction of Infected",
+    color = "People",
+    shape = "People"
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, max(summarized_data$step), 100)
+  )
+```
+
+### Plot Summarized Data with SE Error Bars
+
+```{r}
+summarized_data |>
+  filter(step %% 10 == 0) |>
+  mutate(se = sd / sqrt(10)) |>
+  ggplot(aes(
+    x = step,
+    y = mean,
+    color = as.factor(num_people)
+  )) +
+  geom_point(
+    aes(shape = as.factor(num_people)),
+    size = 1,
+    alpha = 0.75
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = mean + se,
+      ymax = mean - se
+    ),
+    width = 5
+  ) +
+  geom_line() +
+  labs(
+    title = "Infected Over Time",
+    x = "Steps",
+    y = "Fraction of Infected",
+    color = "People",
+    shape = "People"
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, max(summarized_data$step), 100)
+  )
 ```
