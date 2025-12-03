@@ -1,29 +1,27 @@
 name: setup-netlogo
 author: Daniel Vartanian
 description: |
-  This GitHub Action setup the NetLogo environment in a Linux runner by
-  downloading and installing the specified version of NetLogo. It also
-  configures environment variables and updates the system PATH to include
-  the NetLogo installation directory. Only NetLogo versions greater than 6.4.0
-  are supported.
+  This GitHub Action sets up the NetLogo environment on a Linux runner by
+  downloading and installing NetLogo, configuring the required environment
+  variables, and updating the system PATH. Only versions newer than 6.4.0 are
+  supported.
 inputs:
   version:
     description: |
-      A character string indicating the NetLogo version to use
-      (e.g., `"7.0.2"`). Available versions can be found at
-      <https://github.com/NetLogo/NetLogo/releases>. Do not include
-      the "v" prefix. Use `"release"` to get the latest stable release.
-    default: "release"
+      A single-quoted (!important) character string indicating the NetLogo
+      version to use (e.g., `'7.0.2'`). Use `'release'` to get the latest
+      stable release. Only versions greater than 6.4.0 are supported.
+    default: 'release'
   architecture:
     description: |
-      A character string indicating the NetLogo system architecture to use.
-      Options are `"32"` or `"64"`.
-    default: "64"
+      A single-quoted (!important) character string indicating the NetLogo
+      system architecture to use. Options are `'32'` or `'64'`.
+    default: '64'
   cache:
     description: |
-      A quoted boolean indicating whether the NetLogo installation should be
-      cached across runs.
-    default: "true"
+      A single-quoted (!important) boolean indicating whether the NetLogo
+      installation should be cached across runs.
+    default: 'true'
 runs:
   using: composite
   steps:
@@ -93,7 +91,7 @@ runs:
       shell: bash
 
     - name: Restore NetLogo Cache
-      if: inputs.cache == "true"
+      if: inputs.cache == 'true'
       id: netlogo-cache
       uses: actions/cache@v4
       with:
@@ -101,7 +99,7 @@ runs:
         key: "netlogo-${{steps.netlogo-version.outputs.version}}-${{inputs.architecture}}"
 
     - name: Download NetLogo
-      if: inputs.cache != "true" || steps.netlogo-cache.outputs.cache-hit != "true"
+      if: inputs.cache != 'true' || steps.netlogo-cache.outputs.cache-hit != 'true'
       run: |
         release_api_url=$(
           printf "%s%s" \
@@ -139,7 +137,7 @@ runs:
       shell: bash
 
     - name: Install NetLogo
-      if: inputs.cache != "true" || steps.netlogo-cache.outputs.cache-hit != "true"
+      if: inputs.cache != 'true' || steps.netlogo-cache.outputs.cache-hit != 'true'
       run: |
         NETLOGO_HOME="/opt/NetLogo-${NETLOGO_VERSION}"
 

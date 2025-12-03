@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ["6.4.0", "7.0.2"]
-        cache: ["true", "false"]
+        version: ['6.4.0', '7.0.2']
+        cache: ['true', 'false']
     name: NetLogo ${{ matrix.version }} (cache=${{ matrix.cache }})
     steps:
       - name: Check Out Repository Code
@@ -22,7 +22,7 @@ jobs:
         uses: ./setup-netlogo
         with:
           version: ${{ matrix.version }}
-          architecture: "64"
+          architecture: '64'
           cache: ${{ matrix.cache }}
 
       - name: Test NetLogo Installation

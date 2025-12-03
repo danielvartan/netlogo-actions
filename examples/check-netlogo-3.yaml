@@ -38,14 +38,14 @@ jobs:
           fi
 
       - name: Install and Initialize renv
-        if: steps.renv-check.outputs.exists == "false"
+        if: steps.renv-check.outputs.exists == 'false'
         run: |
           install.packages("renv")
           renv::init()
         shell: Rscript {0}
 
       - name: Install logolink
-        if: steps.renv-check.outputs.exists == "false"
+        if: steps.renv-check.outputs.exists == 'false'
         run: |
           renv::install("danielvartan/logolink")
           renv::snapshot()
