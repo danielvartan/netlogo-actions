@@ -7,6 +7,7 @@ name: "Run Experiments with Quarto and logolink"
 jobs:
   run-logolink:
     runs-on: ubuntu-latest
+    name: Run Experiments
     permissions:
       contents: write
       pages: write

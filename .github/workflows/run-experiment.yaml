@@ -9,6 +9,7 @@ permissions: read-all
 jobs:
   run-experiments:
     runs-on: ubuntu-latest
+    name: Run Experiments
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -73,7 +74,7 @@ jobs:
         run: |
           # Run Experiment 4
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
-          model_file="Voting Sensitivity Analysis.nlogo"
+          model_file="Voting Sensitivity Analysis.nlogox"
           experiment_name="sensitivity-experiment"
           table_file="/tmp/artifacts/experiment-4-table.csv"
 
