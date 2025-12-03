@@ -30,7 +30,7 @@ website:
     title: false
     right:
       - icon: github
-        href: https://danielvartan.github.io/netlogo-actions/
+        href: https://github.com/danielvartan/netlogo-actions/
         aria-label: GitHub
 
 format:

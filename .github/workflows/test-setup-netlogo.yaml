@@ -15,19 +15,19 @@ jobs:
         cache: ['true', 'false']
     name: "NetLogo ${{matrix.version}} (cache: '${{matrix.cache}}')"
     steps:
-      - name: Check Out Repository Code
+      - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Setup NetLogo
+      - name: Set up NetLogo
         uses: ./setup-netlogo
         with:
           version: ${{matrix.version}}
           architecture: '64'
           cache: ${{matrix.cache}}
 
-      - name: Test NetLogo Installation
+      - name: Test NetLogo installation
         run: |
-          # Test NetLogo Installation
+          # Test NetLogo installation
           if [[ "${{ matrix.version }}" =~ ^([0-6]+) ]]; then
             model_ext="nlogo"
           else

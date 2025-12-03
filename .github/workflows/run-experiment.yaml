@@ -11,20 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     name: Run Experiments
     steps:
-      - name: Checkout Repository
+      - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Setup NetLogo
+      - name: Set up NetLogo
         uses: ./setup-netlogo # danielvartan/netlogo-actions/setup-netlogo@v1
 
-      - name: Create Artifacts Directory
+      - name: Create artifacts directory
         run: |
-          # Create Artifacts Directory
+          # Create artifacts directory
           mkdir -p /tmp/artifacts
 
-      - name: Run Experiment 1
+      - name: Run experiment 1
         run: |
-          # Run Experiment 1
+          # Run experiment 1
           model_dir="$NETLOGO_HOME/models/Sample Models/Biology"
           model_file="Wolf Sheep Predation.nlogox"
           experiment_name="Wolf Sheep Crossing"
@@ -38,9 +38,9 @@ jobs:
 
           cat "${table_file}"
 
-      - name: Run Experiment 2
+      - name: Run experiment 2
         run: |
-          # Run Experiment 2
+          # Run experiment 2
           model_dir="$NETLOGO_HOME/models/Curricular Models/GenEvo"
           model_file="Synthetic Biology - Genetic Switch.nlogox"
           experiment_name="Sample-Experiment"
@@ -54,9 +54,9 @@ jobs:
 
           cat "${table_file}"
 
-      - name: Run Experiment 3
+      - name: Run experiment 3
         run: |
-          # Run Experiment 3
+          # Run experiment 3
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 6"
           model_file="Spread of Disease.nlogox"
           experiment_name="population-density"
@@ -70,9 +70,9 @@ jobs:
 
           cat "${table_file}"
 
-      - name: Run Experiment 4
+      - name: Run experiment 4
         run: |
-          # Run Experiment 4
+          # Run experiment 4
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
           model_file="Voting Sensitivity Analysis.nlogox"
           experiment_name="sensitivity-experiment"
@@ -86,9 +86,9 @@ jobs:
 
           cat "$table_file"
 
-      - name: Run Experiment 5
+      - name: Run experiment 5
         run: |
-          # Run Experiment 5
+          # Run experiment 5
           model_dir="$NETLOGO_HOME/models/Curricular Models/BEAGLE Evolution"
           model_file="Red Queen.nlogox"
           experiment_name="Final Counts"
@@ -102,7 +102,7 @@ jobs:
 
           cat "${table_file}"
 
-      - name: Upload Artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: experiments-output

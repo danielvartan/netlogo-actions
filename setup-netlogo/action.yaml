@@ -25,9 +25,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Validate Arguments
+    - name: Validate arguments
       run: |
-        # Validate Arguments
+        # Validate arguments
         if [[ ! "${{inputs.version}}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]] && \
            [[ "${{inputs.version}}" != "release" ]]; then
           echo \
@@ -75,10 +75,10 @@ runs:
         fi
       shell: bash
 
-    - name: Determine NetLogo Version
+    - name: Determine NetLogo version
       id: netlogo-version
       run: |
-        # Determine NetLogo Version
+        # Determine NetLogo version
         if [[ "${{inputs.version}}" == "release" ]]; then
           NETLOGO_VERSION=$( \
             curl -s \
@@ -101,7 +101,7 @@ runs:
         echo "NETLOGO_VERSION=${NETLOGO_VERSION}" >> "${GITHUB_ENV}"
       shell: bash
 
-    - name: Restore NetLogo Cache
+    - name: Restore NetLogo cache
       if: inputs.cache == 'true'
       id: netlogo-cache
       uses: actions/cache@v4
@@ -186,9 +186,9 @@ runs:
         rm -f "${tarball}"
       shell: bash
 
-    - name: Set Environment Variables
+    - name: Set environment variables
       run: |
-        # Set Environment Variables
+        # Set environment variables
         NETLOGO_HOME="/opt/NetLogo-${NETLOGO_VERSION}"
 
         echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
@@ -197,9 +197,9 @@ runs:
         echo "${NETLOGO_HOME}" >> "${GITHUB_PATH}"
       shell: bash
 
-    - name: Create Symbolic Links
+    - name: Create symbolic links
       run: |
-        # Create Symbolic Links
+        # Create symbolic links
         sudo ln -sf \
           "${NETLOGO_HOME}/bin/NetLogo" \
           /usr/local/bin/NetLogo
@@ -209,8 +209,8 @@ runs:
           /usr/local/bin/netlogo
       shell: bash
 
-    - name: Test NetLogo Installation
+    - name: Test NetLogo installation
       run: |
-        # Test NetLogo Installation
+        # Test NetLogo installation
         netlogo --headless --version
       shell: bash
