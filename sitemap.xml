@@ -2,30 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://danielvartan.github.io/netlogo-actions/SECURITY.html</loc>
-    <lastmod>2025-12-03T20:46:31.903Z</lastmod>
+    <lastmod>2025-12-03T23:52:58.310Z</lastmod>
   </url>
   <url>
-    <loc>https://danielvartan.github.io/netlogo-actions/NEWS.html</loc>
-    <lastmod>2025-12-03T20:46:31.903Z</lastmod>
-  </url>
-  <url>
-    <loc>https://danielvartan.github.io/netlogo-actions/index.html</loc>
-    <lastmod>2025-12-03T20:46:31.907Z</lastmod>
-  </url>
-  <url>
-    <loc>https://danielvartan.github.io/netlogo-actions/setup-netlogo/LICENSE.html</loc>
-    <lastmod>2025-12-03T20:46:31.907Z</lastmod>
-  </url>
-  <url>
-    <loc>https://danielvartan.github.io/netlogo-actions/LICENSE.html</loc>
-    <lastmod>2025-12-03T20:46:31.903Z</lastmod>
+    <loc>https://danielvartan.github.io/netlogo-actions/check-netlogo/LICENSE.html</loc>
+    <lastmod>2025-12-03T23:52:58.311Z</lastmod>
   </url>
   <url>
     <loc>https://danielvartan.github.io/netlogo-actions/extensions/pathdir/5.2.0/license.html</loc>
-    <lastmod>2025-12-03T20:46:31.905Z</lastmod>
+    <lastmod>2025-12-03T23:52:58.313Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielvartan.github.io/netlogo-actions/LICENSE.html</loc>
+    <lastmod>2025-12-03T23:52:58.310Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielvartan.github.io/netlogo-actions/setup-netlogo/LICENSE.html</loc>
+    <lastmod>2025-12-03T23:52:58.315Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielvartan.github.io/netlogo-actions/index.html</loc>
+    <lastmod>2025-12-03T23:52:58.314Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielvartan.github.io/netlogo-actions/NEWS.html</loc>
+    <lastmod>2025-12-03T23:52:58.310Z</lastmod>
   </url>
   <url>
     <loc>https://danielvartan.github.io/netlogo-actions/CODE_OF_CONDUCT.html</loc>
-    <lastmod>2025-12-03T20:46:31.903Z</lastmod>
+    <lastmod>2025-12-03T23:52:58.310Z</lastmod>
   </url>
 </urlset>
