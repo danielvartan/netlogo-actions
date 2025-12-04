@@ -1,6 +1,10 @@
-# v1.1.0 (development version)
+# v1.2.0.9000 (development version)
+
+# v1.2.0 (2025-12-03)
 
 - `[check-netlogo]` action was added. This action runs all Behaviorspace experiments define in NetLogo models present in a repository and uploads the results as artifacts.
+
+- `NetLogo-Actions` now have a [hex logo](images/logo.svg).
 
 # v1.1.0 (2025-12-03)
 

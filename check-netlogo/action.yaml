@@ -114,8 +114,8 @@ runs:
             [[ -z "${experiment_name}" ]] && continue
 
             echo \
-              "Running ${model_file}" \
-              "with experiment '${experiment_name}'."
+              "Running \"${model_file}\"" \
+              "with experiment \"${experiment_name}\"."
 
             sanitized_experiment_name=$( \
               echo "${experiment_name}" \
