@@ -1,5 +1,9 @@
 # v1.2.1.9000 (development version)
 
+- `[setup-netlogo]` had the `architecture` argument removed. The action now automatically detects the architecture of the runner machine.
+- `[setup-netlogo]` now supports macOS and Windows runners in addition to Linux runners.
+- `[check-netlogo`] now check OS compatibility before running Behaviorspace experiments.
+
 # v1.2.1 (2025-12-04)
 
 - `[check-netlogo]` now suppresses harmless warnings related to [mediaLib](https://en.wikipedia.org/wiki/MediaLib). These warnings occur when NetLogo attempts to load a GUI-related library in headless mode while using the [GIS extension](https://github.com/NetLogo/GIS-Extension). See [this issue](https://github.com/NetLogo/GIS-Extension/issues/4) for more details.

@@ -56,14 +56,13 @@ setup_file <- create_experiment(
   repetitions = 10,
   sequential_run_order = TRUE,
   run_metrics_every_step = TRUE,
-  setup = "setup",
-  go = "go",
   time_limit = 1000,
+  setup = 'setup',
+  go = 'go',
   metrics = c(
     'count wolves',
     'count sheep'
   ),
-  run_metrics_condition = NULL,
   constants = list(
     "number-of-sheep" = 500,
     "number-of-wolves" = list(
@@ -155,16 +154,12 @@ setup_file <- create_experiment(
   repetitions = 10,
   sequential_run_order = TRUE,
   run_metrics_every_step = TRUE,
-  setup = "setup",
-  go = "go",
-  post_run = NULL,
-  post_experiment = NULL,
   time_limit = 1000,
-  exit_condition = NULL,
+  setup = 'setup',
+  go = 'go',
   metrics = c(
     'count turtles with [infected?]'
   ),
-  run_metrics_condition = NULL,
   constants = list(
     "variant" = "mobile",
     "num-people" = list(

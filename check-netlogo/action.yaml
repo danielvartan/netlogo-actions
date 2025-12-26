@@ -13,19 +13,31 @@ description: |
 inputs:
   ignore:
     description: |
-      A single-quoted (!important) character string specifying paths to exclude
+      A single-quoted (!important!) character string specifying paths to exclude
       when searching for NetLogo models. Supports glob patterns (e.g.,
       `'models/old/**'`). Multiple paths can be separated by commas (e.g.,
       `'models/old/**, docs/**'`).
     default: ''
   artifacts:
     description: |
-      A single-quoted (!important) boolean value indicating whether to upload
-      the experiment results as artifacts.
+      A single-quoted (!important!) boolean value indicating whether to upload
+      the experiment results as an artifact.
     default: 'true'
 runs:
   using: composite
   steps:
+    - name: Check OS compatibility
+      run: |
+        # Check OS compatibility
+        os_name=$(uname -s)
+
+        if [[ ${RUNNER_OS} != "Linux" ]]; then
+          echo "Error: This action only supports Linux runners."
+
+          exit 1
+        fi
+      shell: bash
+
     - name: Install dependencies
       run: |
         # Install dependencies
@@ -121,13 +133,13 @@ runs:
 
             sanitized_experiment_name=$( \
               echo "${experiment_name}" \
-              | sed 's/[^a-zA-Z0-9_-]/_/g' \
+                | sed 's/[^a-zA-Z0-9_-]/_/g' \
             )
 
             sanitized_model_name=$( \
               basename "${model_file}" \
-              | sed 's/\.[^.]*$//' \
-              | sed 's/[^a-zA-Z0-9_-]/_/g' \
+                | sed 's/\.[^.]*$//' \
+                | sed 's/[^a-zA-Z0-9_-]/_/g' \
             )
 
             output_file=$( \
