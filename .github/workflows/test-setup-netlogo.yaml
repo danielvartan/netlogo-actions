@@ -10,14 +10,15 @@ jobs:
   test-setup-netlogo:
     strategy:
       matrix:
-        os:
-          - macos-latest
-          - windows-latest
-          - ubuntu-latest
-        version: ['6.4.0', '7.0.3']
+        config:
+          - {os: macos-latest, version: 'release'}
+          - {os: windows-latest, version: '6.4.0'}
+          - {os: windows-latest, version: 'release'}
+          - {os: ubuntu-latest, version: '6.4.0'}
+          - {os: ubuntu-latest, version: 'release'}
         cache: ['true', 'false']
-    name: "${{matrix.os}} (NetLogo ${{matrix.version}}) (cache: '${{matrix.cache}}')"
-    runs-on: ${{matrix.os}}
+    name: "${{matrix.config.os}} (NetLogo ${{matrix.config.version}}) (cache: '${{matrix.cache}}')"
+    runs-on: ${{matrix.config.os}}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -25,13 +26,13 @@ jobs:
       - name: Set up NetLogo
         uses: ./setup-netlogo
         with:
-          version: ${{matrix.version}}
+          version: ${{matrix.config.version}}
           cache: ${{matrix.cache}}
 
       - name: Test NetLogo installation
         run: |
           # Test NetLogo installation
-          if [[ "${{matrix.version}}" =~ ^[0-6]\. ]]; then
+          if [[ "${{matrix.config.version}}" =~ ^[0-6]\. ]]; then
             model_ext="nlogo"
           else
             model_ext="nlogox"

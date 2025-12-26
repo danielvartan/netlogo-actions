@@ -46,6 +46,15 @@ runs:
 
             exit 1
           fi
+
+          if [[ "${{inputs.version}}" == "6.4.0"]] &&
+             [[ "${RUNNER_ARCH}" =~ ^(ARM|ARM64)$ ]]; then
+            echo \
+              "Error: NetLogo 6.4.0 and earlier versions are not" \
+              "available for this architecture (${RUNNER_ARCH})."
+
+            exit 1
+          fi
         fi
 
         if [[ "${{inputs.cache}}" != "true" ]] && \
