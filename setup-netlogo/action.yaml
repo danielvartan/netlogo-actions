@@ -305,20 +305,20 @@ runs:
         case ${RUNNER_OS} in
           "Linux")
             sudo ln -sf \
-              "${NETLOGO_HOME}/NetLogo" \
+              "${NETLOGO_HOME}/bin/NetLogo" \
               /usr/local/bin/NetLogo
 
             sudo ln -sf \
-              "${NETLOGO_HOME}/NetLogo" \
+              "${NETLOGO_HOME}/bin/NetLogo" \
               /usr/local/bin/netlogo
             ;;
           "macOS")
             sudo ln -sf \
-              "${NETLOGO_HOME}/Contents/MacOS/NetLogo" \
+              "${NETLOGO_HOME}/Contents/MacOS/" \
               /usr/local/bin/NetLogo
 
             sudo ln -sf \
-              "${NETLOGO_HOME}/Contents/MacOS/NetLogo" \
+              "${NETLOGO_HOME}/Contents/MacOS/" \
               /usr/local/bin/netlogo
             ;;
           "Windows")
