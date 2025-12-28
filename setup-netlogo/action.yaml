@@ -111,7 +111,7 @@ runs:
 
         case ${RUNNER_OS} in
           "Linux")
-            echo "path=/opt/NetLogo-${NETLOGO_VERSION}" >> "${GITHUB_OUTPUT}"
+            echo "path=/opt/NetLogo ${NETLOGO_VERSION}" >> "${GITHUB_OUTPUT}"
             ;;
           "macOS")
             echo "path=/Applications/NetLogo ${NETLOGO_VERSION}.app" >> "${GITHUB_OUTPUT}"
@@ -328,7 +328,7 @@ runs:
               ;;
            "Windows")
               start /wait \
-                msiexec /i "${bundle}"/qn /norestart \
+                msiexec /i "${bundle}" /qn /norestart \
                 APPLICATIONROOTDIRECTORY="${NETLOGO_HOME}"
 
               if [[ ! -f "${NETLOGO_HOME}/NetLogo_Console.exe" ]]; then
