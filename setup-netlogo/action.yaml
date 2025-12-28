@@ -395,16 +395,10 @@ runs:
           "Windows")
             symlink_target=$(cygpath -w "${NETLOGO_HOME}/NetLogo.exe")
 
-            rm -f \
-              "C:\Windows\System32\netlogo.exe" \
-              "C:\Windows\System32\NetLogo.exe"
-
+            # On Windows, creating one link allows you to call either name
+            # from the CLI.
             cmd //c mklink \
               "C:\Windows\System32\NetLogo.exe" \
-              "${symlink_target}"
-
-            cmd //c mklink \
-              "C:\Windows\System32\netlogo.exe" \
               "${symlink_target}"
             ;;
         esac
