@@ -232,31 +232,27 @@ runs:
         case ${RUNNER_OS} in
           "Linux")
               NETLOGO_HOME="/opt/NetLogo ${NETLOGO_VERSION}"
-
-              echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
               ;;
            "macOS")
               NETLOGO_HOME="/Applications/NetLogo ${NETLOGO_VERSION}"
-
-              echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
               ;;
            "Windows")
               case "${RUNNER_ARCH}" in
                 X64)
-                  NETLOGO_HOME="C:\Program Files\NetLogo ${NETLOGO_VERSION}"
+                  NETLOGO_HOME="/c/Program Files/NetLogo ${NETLOGO_VERSION}"
                   ;;
                 X86)
-                  NETLOGO_HOME="C:\Program Files (x86)\NetLogo ${NETLOGO_VERSION}"
+                  NETLOGO_HOME="/c/Program Files (x86)/NetLogo ${NETLOGO_VERSION}"
                   ;;
               esac
-
-              echo "NETLOGO_HOME=$(cygpath -w "$NETLOGO_HOME")" >> "${GITHUB_ENV}"
               ;;
             *)
               echo "${RUNNER_OS} not supported"
               exit 1
               ;;
         esac
+
+        echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
       shell: bash
 
     - name: Install NetLogo
@@ -327,22 +323,30 @@ runs:
               rm -rf "${netlogo_mountpoint}"
               ;;
            "Windows")
-              start /wait msiexec /i "${bundle}" /qn /norestart \
-                INSTALLDIR="${NETLOGO_HOME}" \
-                APPLICATIONROOTDIRECTORY="${NETLOGO_HOME}" \
-                ALLUSERS=1 \
-                /l*v msi_install.log
+              win_install_dir="$(cygpath -w ${NETLOGO_HOME})"
 
-              netlogo_console_path=$( \
-                cygpath -w "${NETLOGO_HOME}\NetLogo_Console.exe"
-              )
+              powershell.exe \
+                -Command \
+                "Start-Process msiexec.exe \
+                -ArgumentList '/i \"${bundle}\" /qn /norestart \
+                INSTALLDIR=\"${win_install_dir}\" \
+                APPLICATIONROOTDIRECTORY=\"${win_install_dir}\" \
+                ALLUSERS=1 \
+                /l*v msi_install.log' -Wait"
+
+              netlogo_console_path="${NETLOGO_HOME}/NetLogo_Console.exe"
 
               if [[ ! -f "${netlogo_console_path}" ]]; then
                 echo "Error: NetLogo installation failed."
 
                 if [[ -f msi_install.log ]]; then
                   echo "--- MSI LOG SNIPPET ---"
-                  tail -n 50 msi_install.log
+
+                  tail -n 100 msi_install.log
+                else
+                  echo \
+                    "MSI log was never created." \
+                    "The installer likely didn't start."
                 fi
 
                 exit 1
