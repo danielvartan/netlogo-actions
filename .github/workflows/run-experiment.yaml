@@ -21,11 +21,14 @@ jobs:
       - name: Create artifacts directory
         run: |
           # Create artifacts directory
+
           mkdir -p /tmp/artifacts
+        shell: bash
 
       - name: Run experiment 1
         run: |
           # Run experiment 1
+
           model_dir="$NETLOGO_HOME/models/Sample Models/Biology"
           model_file="Wolf Sheep Predation.nlogox"
           experiment_name="Wolf Sheep Crossing"
@@ -38,10 +41,12 @@ jobs:
             --table "${table_file}"
 
           cat "${table_file}"
+        shell: bash
 
       - name: Run experiment 2
         run: |
           # Run experiment 2
+
           model_dir="$NETLOGO_HOME/models/Curricular Models/GenEvo"
           model_file="Synthetic Biology - Genetic Switch.nlogox"
           experiment_name="Sample-Experiment"
@@ -54,10 +59,12 @@ jobs:
             --table "${table_file}"
 
           cat "${table_file}"
+        shell: bash
 
       - name: Run experiment 3
         run: |
           # Run experiment 3
+
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 6"
           model_file="Spread of Disease.nlogox"
           experiment_name="population-density"
@@ -70,10 +77,12 @@ jobs:
             --table "${table_file}"
 
           cat "${table_file}"
+        shell: bash
 
       - name: Run experiment 4
         run: |
           # Run experiment 4
+
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
           model_file="Voting Sensitivity Analysis.nlogox"
           experiment_name="sensitivity-experiment"
@@ -86,10 +95,12 @@ jobs:
             --table "$table_file"
 
           cat "$table_file"
+        shell: bash
 
       - name: Run experiment 5
         run: |
           # Run experiment 5
+
           model_dir="$NETLOGO_HOME/models/Curricular Models/BEAGLE Evolution"
           model_file="Red Queen.nlogox"
           experiment_name="Final Counts"
@@ -102,6 +113,7 @@ jobs:
             --table "${table_file}"
 
           cat "${table_file}"
+        shell: bash
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

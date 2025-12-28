@@ -33,20 +33,21 @@ jobs:
       - name: Run experiment
         run: |
           # Run experiment
+
           if [[ "${NETLOGO_VERSION}" =~ ^[0-6]\. ]]; then
-            model_ext="nlogo"
+            model_extension='nlogo'
           else
-            model_ext="nlogox"
+            model_extension='nlogox'
           fi
 
           model_path="${NETLOGO_HOME}/models/Sample Models/Biology"
-          model_file="Wolf Sheep Predation.${model_ext}"
+          model_file="Wolf Sheep Predation.${model_extension}"
 
           netlogo \
             --headless \
             --model "${model_path}/${model_file}" \
-            --experiment "Wolf Sheep Crossing" \
-            --table /tmp/table-output.csv
+            --experiment 'Wolf Sheep Crossing' \
+            --table '/tmp/table-output.csv'
 
-          cat /tmp/table-output.csv
+          cat '/tmp/table-output.csv'
         shell: bash

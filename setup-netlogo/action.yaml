@@ -12,13 +12,13 @@ description: |
 inputs:
   version:
     description: |
-      A single-quoted (!important) character string indicating the NetLogo
+      A single-quoted (!important!) character string indicating the NetLogo
       version to use (e.g., `'7.0.3'`). Use `'release'` to get the latest
       stable release. Only versions 6.4.0 and above are supported.
     default: 'release'
   cache:
     description: |
-      A single-quoted (!important) boolean value indicating whether the NetLogo
+      A single-quoted (!important!) boolean value indicating whether the NetLogo
       installation should be cached across runs.
     default: 'true'
 runs:
@@ -111,22 +111,24 @@ runs:
 
         case ${RUNNER_OS} in
           "Linux")
-            echo "path=/opt/NetLogo ${NETLOGO_VERSION}" >> "${GITHUB_OUTPUT}"
+            cache_path="/opt/NetLogo ${NETLOGO_VERSION}"
             ;;
           "macOS")
-            echo "path=/Applications/NetLogo ${NETLOGO_VERSION}.app" >> "${GITHUB_OUTPUT}"
+            cache_path="/Applications/NetLogo ${NETLOGO_VERSION}.app"
             ;;
           "Windows")
             case ${RUNNER_ARCH} in
-              X64)
-                echo "path=C:\Program Files\NetLogo ${NETLOGO_VERSION}" >> "${GITHUB_OUTPUT}"
+              "X64")
+                cache_path="C:\Program Files\NetLogo ${NETLOGO_VERSION}"
                 ;;
-              X86)
-                echo "path=C:\Program Files (x86)\NetLogo ${NETLOGO_VERSION}" >> "${GITHUB_OUTPUT}"
+              "X86")
+                cache_path="C:\Program Files (x86)\NetLogo ${NETLOGO_VERSION}"
                 ;;
             esac
             ;;
         esac
+
+        echo "path=${cache_path}" >> "${GITHUB_OUTPUT}"
       shell: bash
 
     - name: Restore NetLogo from cache
@@ -149,11 +151,11 @@ runs:
         case ${RUNNER_OS} in
           "Linux")
               case ${RUNNER_ARCH} in
-                X64)
-                  echo "bundle_ext=64.tgz" >> "${GITHUB_OUTPUT}"
+                "X64")
+                  extension="64.tgz"
                   ;;
-                X86)
-                  echo "bundle_ext=32.tgz" >> "${GITHUB_OUTPUT}"
+                "X86")
+                  extension="32.tgz"
                   ;;
                 *)
                   echo "${RUNNER_OS} "${RUNNER_ARCH}" not supported"
@@ -165,20 +167,20 @@ runs:
            "macOS")
               case "${RUNNER_ARCH}" in
                 "X86" | "X64")
-                  echo "bundle_ext=x86_64.dmg" >> "${GITHUB_OUTPUT}"
+                  extension="x86_64.dmg"
                   ;;
                 *)
-                  echo "bundle_ext=aarch64.dmg" >> "${GITHUB_OUTPUT}"
+                  extension="aarch64.dmg"
                   ;;
               esac
               ;;
            "Windows")
               case "${RUNNER_ARCH}" in
-                X64)
-                  echo "bundle_ext=64.msi" >> "${GITHUB_OUTPUT}"
+                "X64")
+                  extension="64.msi"
                   ;;
-                X86)
-                  echo "bundle_ext=32.msi" >> "${GITHUB_OUTPUT}"
+                "X86")
+                  extension="32.msi"
                   ;;
                 *)
                   echo "${RUNNER_OS} ${RUNNER_ARCH} not supported"
@@ -189,9 +191,12 @@ runs:
               ;;
             *)
               echo "${RUNNER_OS} not supported"
+
               exit 1
               ;;
         esac
+
+        echo "extension=${extension}" >> "${GITHUB_OUTPUT}"
       shell: bash
 
     - name: Download NetLogo
@@ -205,7 +210,7 @@ runs:
 
         repo="NetLogo/NetLogo"
         tag="v${NETLOGO_VERSION}"
-        extension="${{steps.netlogo-bundle.outputs.bundle_ext}}"
+        extension="${{steps.netlogo-bundle.outputs.extension}}"
 
         gh release download "$tag" \
           --repo "$repo" \
@@ -216,7 +221,8 @@ runs:
 
         if [[ -z "$bundle" ]]; then
           echo \
-            "Error: No file matching *${extension} found in release ${tag}."
+            "Error: No file matching" \
+            "'*${extension}' found in release '${tag}'."
 
           exit 1
         fi
@@ -231,28 +237,29 @@ runs:
 
         case ${RUNNER_OS} in
           "Linux")
-              NETLOGO_HOME="/opt/NetLogo ${NETLOGO_VERSION}"
+              netlogo_home="/opt/NetLogo ${NETLOGO_VERSION}"
               ;;
            "macOS")
-              NETLOGO_HOME="/Applications/NetLogo ${NETLOGO_VERSION}"
+              netlogo_home="/Applications/NetLogo ${NETLOGO_VERSION}"
               ;;
            "Windows")
               case "${RUNNER_ARCH}" in
-                X64)
-                  NETLOGO_HOME="/c/Program Files/NetLogo ${NETLOGO_VERSION}"
+                "X64")
+                  netlogo_home="/c/Program Files/NetLogo ${NETLOGO_VERSION}"
                   ;;
-                X86)
-                  NETLOGO_HOME="/c/Program Files (x86)/NetLogo ${NETLOGO_VERSION}"
+                "X86")
+                  netlogo_home="/c/Program Files (x86)/NetLogo ${NETLOGO_VERSION}"
                   ;;
               esac
               ;;
             *)
               echo "${RUNNER_OS} not supported"
+
               exit 1
               ;;
         esac
 
-        echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
+        echo "NETLOGO_HOME=${netlogo_home}" >> "${GITHUB_ENV}"
       shell: bash
 
     - name: Install NetLogo
@@ -269,12 +276,12 @@ runs:
           "Linux")
               netlogo_console_path=$( \
                 tar -tzf "${bundle}" \
-                | grep "NetLogo_Console$" \
-                | head -n 1 \
+                  | grep "NetLogo_Console$" \
+                  | head -n 1 \
               )
 
               if [[ -z "${netlogo_console_path}" ]]; then
-                echo "Error: NetLogo_Console not found in bundle."
+                echo "Error: 'NetLogo_Console' not found in bundle."
 
                 exit 1
               fi
@@ -295,7 +302,7 @@ runs:
               fi
               ;;
            "macOS")
-              netlogo_mountpoint="/tmp/netlogo_mountpoint"
+              netlogo_mountpoint='/tmp/netlogo_mountpoint'
 
               mkdir -p "${netlogo_mountpoint}"
 
@@ -305,11 +312,11 @@ runs:
 
               netlogo_console_path=$( \
                 find "${netlogo_mountpoint}" -name "NetLogo_Console" \
-                | head -n 1 \
+                  | head -n 1 \
               )
 
               if [[ -z "${netlogo_console_path}" ]]; then
-                echo "Error: NetLogo_Console not found in bundle."
+                echo "Error: 'NetLogo_Console' not found in bundle."
 
                 exit 1
               fi
@@ -334,7 +341,7 @@ runs:
 
               if [[ ! -f "${netlogo_console_path}" ]]; then
                 echo \
-                  "Error: NetLogo installation failed (1603)." \
+                  "Error: NetLogo installation failed." \
                   "Check msi_install.log."
 
                 tail -n 100 msi_install.log
@@ -344,6 +351,7 @@ runs:
               ;;
             *)
               echo "${RUNNER_OS} not supported"
+
               exit 1
               ;;
         esac
@@ -360,24 +368,26 @@ runs:
 
         case ${RUNNER_OS} in
           "Linux" | "macOS")
-              echo "NETLOGO_CONSOLE=${NETLOGO_HOME}/NetLogo_Console" >> "${GITHUB_ENV}"
+              netlogo_console="${NETLOGO_HOME}/NetLogo_Console"
               ;;
            "Windows")
-              echo "NETLOGO_CONSOLE=${NETLOGO_HOME}\NetLogo_Console.exe" >> "${GITHUB_ENV}"
+              netlogo_console="${NETLOGO_HOME}\NetLogo_Console.exe"
               ;;
             *)
               echo "${RUNNER_OS} not supported"
+
               exit 1
               ;;
         esac
 
+        echo "NETLOGO_CONSOLE=${netlogo_console}" >> "${GITHUB_ENV}"
         echo "${NETLOGO_HOME}" >> "${GITHUB_PATH}"
       shell: bash
 
     - name: Create symbolic links
       run: |
         # Create symbolic links
-        set -x
+        # set -x
 
         case ${RUNNER_OS} in
           "Linux")

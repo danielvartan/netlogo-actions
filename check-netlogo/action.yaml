@@ -5,11 +5,13 @@ description: |
   BehaviorSpace experiments found in those models using the NetLogo headless
   API. It requires the repository to be checked out (via `actions/checkout@v*`)
   and NetLogo to be available on the runner (via
-  `danielvartan/netlogo-actions/setup-netlogo@v*`). The action automatically
-  selects the appropriate file extensions based on the installed NetLogo
-  version: `.nlogo` and `.nlogo3d` for NetLogo 6 and earlier, or `.nlogox` and
-  `.nlogox3d` for NetLogo 7 and later. Experiment results are uploaded as
-  artifacts by default.
+  `danielvartan/netlogo-actions/setup-netlogo@v*`). Only `ubuntu-latest`
+  runners are supported.
+
+  The action automatically selects the appropriate file extensions based on the
+  installed NetLogo version: `.nlogo` and `.nlogo3d` for NetLogo 6 and earlier,
+  or `.nlogox` and `.nlogox3d` for NetLogo 7 and later. Experiment results are
+  uploaded as artifacts by default.
 inputs:
   ignore:
     description: |
@@ -29,7 +31,7 @@ runs:
     - name: Check OS compatibility
       run: |
         # Check OS compatibility
-        os_name=$(uname -s)
+        # set -x
 
         if [[ ${RUNNER_OS} != "Linux" ]]; then
           echo "Error: This action only supports Linux runners."
@@ -38,9 +40,27 @@ runs:
         fi
       shell: bash
 
+    - name: Validate arguments
+      run: |
+        # Validate arguments
+        # set -x
+
+        if [[ "${{inputs.artifacts}}" != "true" ]] && \
+           [[ "${{inputs.artifacts}}" != "false" ]]; then
+          echo \
+            "Error: Invalid artifacts option" \
+            "('${{inputs.artifacts}}')." \
+            "Valid options are 'true' or 'false'."
+
+          exit 1
+        fi
+      shell: bash
+
     - name: Install dependencies
       run: |
         # Install dependencies
+        # set -x
+
         sudo apt-get update -qq >/dev/null
         sudo apt-get install -y -qq ripgrep >/dev/null
       shell: bash
@@ -48,6 +68,8 @@ runs:
     - name: Create artifacts directory
       run: |
         # Create artifacts directory
+        # set -x
+
         mkdir -p /tmp/check-netlogo
       shell: bash
 
@@ -55,8 +77,9 @@ runs:
       id: netlogo-models
       run: |
         # Search for NetLogo models
-        ignore_patterns="${{inputs.ignore}}"
+        # set -x
 
+        ignore_patterns="${{inputs.ignore}}"
         netlogo_version=$(netlogo --headless --version | awk '{print $2}')
 
         if [[ "${netlogo_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
@@ -64,17 +87,13 @@ runs:
 
           if (( major_version < 7 )); then
             find_cmd=( \
-              find . -type f \( \
-              -name "*.nlogo" \
-              -o -name "*.nlogo3d" \
-              \) \
+              find . \
+                -type f \( -name "*.nlogo" -o -name "*.nlogo3d" \) \
             )
           else
             find_cmd=( \
-              find . -type f \( \
-              -name "*.nlogox" \
-              -o -name "*.nlogox3d" \
-              \) \
+              find . \
+              -type f \( -name "*.nlogox" -o -name "*.nlogox3d" \) \
             )
           fi
         else
@@ -87,8 +106,10 @@ runs:
           IFS=',' read -ra patterns <<< "${ignore_patterns}"
 
           exclude_args=()
+
           for pattern in "${patterns[@]}"; do
             pattern=$(echo "${pattern}" | xargs)
+
             [[ -n "${pattern}" ]] && exclude_args+=(-not -path "./${pattern}")
           done
 
@@ -99,6 +120,7 @@ runs:
 
         if [[ -z "${netlogo_models}" ]]; then
           echo "No NetLogo models found."
+
           echo "found=false" >> "${GITHUB_OUTPUT}"
         else
           echo "found=true" >> "${GITHUB_OUTPUT}"
@@ -115,7 +137,7 @@ runs:
         # Run experiments
         export JAVA_TOOL_OPTIONS="-Dcom.sun.media.jai.disableMediaLib=true"
 
-        readarray -t models <<< "${{ steps.netlogo-models.outputs.models }}"
+        readarray -t models <<< "${{steps.netlogo-models.outputs.models}}"
 
         for model_file in "${models[@]}"; do
           [[ -z "${model_file}" ]] && continue
@@ -128,8 +150,8 @@ runs:
             [[ -z "${experiment_name}" ]] && continue
 
             echo \
-              "Running \"${model_file}\"" \
-              "with experiment \"${experiment_name}\"."
+              "Running '${model_file}'" \
+              "with experiment '${experiment_name}''."
 
             sanitized_experiment_name=$( \
               echo "${experiment_name}" \
@@ -160,6 +182,7 @@ runs:
 
         shopt -s nullglob
         files=(/tmp/check-netlogo/*.csv)
+
         if [[ ${#files[@]} -gt 0 ]]; then
           echo "found=true" >> "${GITHUB_OUTPUT}"
 
