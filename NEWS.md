@@ -2,7 +2,7 @@
 
 # v1.3.1 (2025-12-28)
 
-- The project has been renamed from `NetLogo-Actions` to `LogoActions` to align with the naming conventions of other NetLogo-related projects, such as [`LogoLink`](https://github.com/danielvartan/logolink), [`LogoScope`](https://github.com/danielvartan/logoscope), [`LogoClim`](https://github.com/sustentarea/logoclim), [`LogoShapes`](https://github.com/danielvartan/netlogo-shapes), and [`LogoUtils`](https://github.com/danielvartan/netlogo-utils).
+- The project has been renamed from `NetLogo-Actions` to `LogoActions` to align with the naming conventions of other NetLogo-related projects, such as [`LogoClim`](https://github.com/sustentarea/logoclim), [`LogoLink`](https://github.com/danielvartan/logolink), [`LogoScope`](https://github.com/danielvartan/logoscope), [`LogoShapes`](https://github.com/danielvartan/logoshapes), and [`LogoUtils`](https://github.com/danielvartan/logoutils).
 
 # v1.3.0 (2025-12-28)
 
