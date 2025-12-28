@@ -1,1 +1,1 @@
-Sitemap: https://danielvartan.github.io/netlogo-actions/sitemap.xml
+Sitemap: https://danielvartan.github.io/logoactions/sitemap.xml
