@@ -38,7 +38,7 @@
 
 # v1.0.0 (2025-12-01)
 
-- First release! 🎉
+First release! 🎉
 
 # v0.0.0.9000
 
