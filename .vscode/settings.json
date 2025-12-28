@@ -33,6 +33,7 @@
     "endswith",
     "errorbar",
     "esac",
+    "getenv",
     "ggplot",
     "IABM",
     "INSTALLDIR",

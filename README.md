@@ -156,16 +156,13 @@ jobs:
           sudo apt-get install -y -qq \
             libfontconfig1-dev \
             pandoc
-          shell: bash
+        shell: bash
 
       - name: Set up NetLogo
         uses: danielvartan/netlogo-actions/setup-netlogo@v1
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
-
-      - name: Install R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Check if renv is initialized
         id: renv-check
@@ -179,28 +176,13 @@ jobs:
           fi
         shell: bash
 
-      - name: Install and initialize renv
-        if: steps.renv-check.outputs.exists == 'false'
-        run: |
-          # Install and initialize renv
-
-          install.packages("renv")
-
-          renv::init()
-        shell: Rscript {0}
-
-      - name: Install logolink
-        if: steps.renv-check.outputs.exists == 'false'
-        run: |
-          # Install logolink
-
-          renv::install("danielvartan/logolink")
-
-          renv::snapshot()
-        shell: Rscript {0}
-
       - name: Set up renv
+        if: steps.renv-check.outputs.exists == 'true'
         uses: r-lib/actions/setup-renv@v2
+
+      - name: Install R dependencies
+        if: steps.renv-check.outputs.exists == 'false'
+        uses: r-lib/actions/setup-r-dependencies@v2
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
