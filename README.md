@@ -47,7 +47,7 @@ jobs:
     name: Check NetLogo models
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     permissions: read-all
     steps:
       - name: Check out repository
@@ -80,7 +80,7 @@ jobs:
     name: Run experiments
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     permissions: read-all
     steps:
       - name: Checkout Repository
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Run experiments
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
     permissions:
       contents: write
       pages: write
@@ -220,7 +220,7 @@ The action can be integrated into your GitHub Actions workflow simply by adding 
   uses: danielvartan/netlogo-actions/check-netlogo@v1
 ```
 
-Note that you must first [check out](https://github.com/actions/checkout) the repository and set up NetLogo using the [`setup-netlogo`](#setup-netlogo-reference) action before using `check-netlogo`.
+Before using `check-netlogo`, ensure you [check out](https://github.com/actions/checkout) the repository and set up NetLogo with the [`setup-netlogo`](#setup-netlogo-reference) action. You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests in `setup-netlogo`.
 
 ### Functionality
 
@@ -268,7 +268,14 @@ The action can be integrated into your GitHub Actions workflow simply by adding 
   uses: danielvartan/netlogo-actions/setup-netlogo@v1
 ```
 
-This will make NetLogo available for use in subsequent steps of your workflow.
+You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests in `setup-netlogo`.
+
+```yaml
+env:
+  GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+```
+
+This will make NetLogo available for use in subsequent steps.
 
 ### Functionality
 

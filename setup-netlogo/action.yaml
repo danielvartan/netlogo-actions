@@ -6,9 +6,9 @@ description: |
   PATH. It supports `ubuntu-latest`, `macos-latest`, and `windows-latest`
   runners, and only NetLogo versions 6.4.0 and above.
 
-  Bundles are downloaded from the official NetLogo GitHub releases. To avoid
-  GitHub API rate limiting, set `GH_TOKEN` as an environment variable in the
-  workflow that uses this action.
+  Bundles are downloaded from the official NetLogo GitHub releases using the
+  GitHub CLI. The `GH_TOKEN` environment variable must be set in the workflow to
+  authenticate GitHub API requests. This avoids rate limiting issues.
 inputs:
   version:
     description: |
