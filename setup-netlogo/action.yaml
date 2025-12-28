@@ -250,7 +250,7 @@ runs:
                   ;;
               esac
 
-              echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
+              echo "NETLOGO_HOME=${cygpath -w NETLOGO_HOME}" >> "${GITHUB_ENV}"
               ;;
             *)
               echo "${RUNNER_OS} not supported"
@@ -327,12 +327,24 @@ runs:
               rm -rf "${netlogo_mountpoint}"
               ;;
            "Windows")
-              start /wait \
-                msiexec /i "${bundle}" /qn /norestart \
-                APPLICATIONROOTDIRECTORY="${NETLOGO_HOME}"
+              start /wait msiexec /i "${bundle}" /qn /norestart \
+                INSTALLDIR="${NETLOGO_HOME}" \
+                APPLICATIONROOTDIRECTORY="${NETLOGO_HOME}" \
+                ALLUSERS=1 \
+                /l*v msi_install.log
 
-              if [[ ! -f "${NETLOGO_HOME}/NetLogo_Console.exe" ]]; then
+              netlogo_console_path=$( \
+                cygpath -w "${NETLOGO_HOME}\NetLogo_Console.exe"
+              )
+
+              if [[ ! -f "${netlogo_console_path}" ]]; then
                 echo "Error: NetLogo installation failed."
+
+                if [[ -f msi_install.log ]]; then
+                  echo "--- MSI LOG SNIPPET ---"
+                  tail -n 50 msi_install.log
+                fi
+
                 exit 1
               fi
               ;;
