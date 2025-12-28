@@ -6,7 +6,7 @@ description: |
   PATH. It supports `ubuntu-latest`, `macos-latest`, and `windows-latest`
   runners, and only NetLogo versions 6.4.0 and above.
 
-  Bundles are downloaded from the official NetLogo GitHub releases using the
+  Bundles are downloaded from the official NetLogo GitHub releases using
   GitHub CLI. The `GH_TOKEN` environment variable must be set in the workflow to
   authenticate GitHub API requests. This avoids rate limiting issues.
 inputs:
@@ -241,16 +241,14 @@ runs:
               echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
               ;;
            "Windows")
-              NETLOGO_HOME=$( \
-                case "${RUNNER_ARCH}" in
-                  X64)
-                    echo "C:\Program Files\NetLogo ${NETLOGO_VERSION}"
-                    ;;
-                  X86)
-                    echo "C:\Program Files (x86)\NetLogo ${NETLOGO_VERSION}"
-                    ;;
-                esac
-              )
+              case "${RUNNER_ARCH}" in
+                X64)
+                  NETLOGO_HOME="C:\Program Files\NetLogo ${NETLOGO_VERSION}"
+                  ;;
+                X86)
+                  NETLOGO_HOME="C:\Program Files (x86)\NetLogo ${NETLOGO_VERSION}"
+                  ;;
+              esac
 
               echo "NETLOGO_HOME=${NETLOGO_HOME}" >> "${GITHUB_ENV}"
               ;;
@@ -267,7 +265,7 @@ runs:
         steps.netlogo-cache.outputs.cache-hit != 'true'
       run: |
         # Install NetLogo
-        set -x
+        # set -x
 
         bundle="${{steps.netlogo-download.outputs.bundle}}"
 
