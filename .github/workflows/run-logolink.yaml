@@ -49,28 +49,22 @@ jobs:
           fi
         shell: bash
 
-      - name: Install and initialize renv
-        if: steps.renv-check.outputs.exists == 'false'
-        run: |
-          # Install and initialize renv
+      - name: Set up renv
+        if: steps.renv-check.outputs.exists == 'true'
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 0
+          bypass-cache: true
 
-          install.packages("renv")
-
-          renv::init()
-        shell: Rscript {0}
-
-      - name: Install logolink
+      - name: Install logolink development version
         if: steps.renv-check.outputs.exists == 'false'
         run: |
           # Install logolink
 
-          renv::install("danielvartan/logolink")
+          install.packages("remotes")
 
-          renv::snapshot()
+          remotes::install_github("danielvartan/logolink")
         shell: Rscript {0}
-
-      - name: Set up renv
-        uses: r-lib/actions/setup-renv@v2
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
