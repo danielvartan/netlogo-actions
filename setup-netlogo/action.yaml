@@ -323,11 +323,13 @@ runs:
               sudo mkdir -p "${NETLOGO_HOME}"
               sudo cp -Rp "${netlogo_console_dir}/." "${NETLOGO_HOME}"
 
-              hdiutil detach "${netlogo_mountpoint}" -force
+              hdiutil detach "${netlogo_mountpoint}" -force -quiet
               rm -rf "${netlogo_mountpoint}"
               ;;
            "Windows")
-              msiexec /i "${bundle}" /qn /norestart
+              start /wait \
+                msiexec /i "${bundle}"/qn /norestart \
+                APPLICATIONROOTDIRECTORY="${NETLOGO_HOME}"
 
               if [[ ! -f "${NETLOGO_HOME}/NetLogo_Console.exe" ]]; then
                 echo "Error: NetLogo installation failed."
