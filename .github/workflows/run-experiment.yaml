@@ -22,7 +22,7 @@ jobs:
         run: |
           # Create artifacts directory
 
-          mkdir -p /tmp/artifacts
+          mkdir -p '/tmp/artifacts'
         shell: bash
 
       - name: Run experiment 1
@@ -30,9 +30,9 @@ jobs:
           # Run experiment 1
 
           model_dir="$NETLOGO_HOME/models/Sample Models/Biology"
-          model_file="Wolf Sheep Predation.nlogox"
-          experiment_name="Wolf Sheep Crossing"
-          table_file="/tmp/artifacts/experiment-1-table.csv"
+          model_file='Wolf Sheep Predation.nlogox'
+          experiment_name='Wolf Sheep Crossing'
+          table_file='/tmp/artifacts/experiment-1-table.csv'
 
           netlogo \
             --headless \
@@ -48,9 +48,9 @@ jobs:
           # Run experiment 2
 
           model_dir="$NETLOGO_HOME/models/Curricular Models/GenEvo"
-          model_file="Synthetic Biology - Genetic Switch.nlogox"
-          experiment_name="Sample-Experiment"
-          table_file="/tmp/artifacts/experiment-2-table.csv"
+          model_file='Synthetic Biology - Genetic Switch.nlogox'
+          experiment_name='Sample-Experiment'
+          table_file='/tmp/artifacts/experiment-2-table.csv'
 
           netlogo \
             --headless \
@@ -66,9 +66,9 @@ jobs:
           # Run experiment 3
 
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 6"
-          model_file="Spread of Disease.nlogox"
-          experiment_name="population-density"
-          table_file="/tmp/artifacts/experiment-3-table.csv"
+          model_file='Spread of Disease.nlogox'
+          experiment_name='population-density'
+          table_file='/tmp/artifacts/experiment-3-table.csv'
 
           netlogo \
             --headless \
@@ -84,9 +84,9 @@ jobs:
           # Run experiment 4
 
           model_dir="$NETLOGO_HOME/models/IABM Textbook/chapter 7"
-          model_file="Voting Sensitivity Analysis.nlogox"
-          experiment_name="sensitivity-experiment"
-          table_file="/tmp/artifacts/experiment-4-table.csv"
+          model_file='Voting Sensitivity Analysis.nlogox'
+          experiment_name='sensitivity-experiment'
+          table_file='/tmp/artifacts/experiment-4-table.csv'
 
           netlogo \
             --headless \
@@ -102,9 +102,9 @@ jobs:
           # Run experiment 5
 
           model_dir="$NETLOGO_HOME/models/Curricular Models/BEAGLE Evolution"
-          model_file="Red Queen.nlogox"
-          experiment_name="Final Counts"
-          table_file="/tmp/artifacts/experiment-5-table.csv"
+          model_file='Red Queen.nlogox'
+          experiment_name='Final Counts'
+          table_file='/tmp/artifacts/experiment-5-table.csv'
 
           netlogo \
             --headless \

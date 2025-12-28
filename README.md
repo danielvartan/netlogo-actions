@@ -33,8 +33,6 @@ You can view this workflow in action on the repository's [actions page](https://
 
 Below is a basic workflow configuration. To use it, create a file named `check-netlogo.yaml` with the content below and place it in the `.github/workflows` folder at the root of your repository.
 
-The runners `windows-latest` and `macos-latest` are also supported.
-
 ```yaml
 on:
   push:
@@ -62,7 +60,7 @@ jobs:
 
 ### Run BehaviorSpace Experiments
 
-This workflow shows how to set up NetLogo and run [BehaviorSpace](https://docs.netlogo.org/behaviorspace.html) experiments in headless mode. Experiment results are saved as [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) files and uploaded as artifacts for later retrieval. This approach is useful for automating simulation runs, conducting parameter sweeps, or integrating NetLogo experiments into data analysis pipelines.
+This workflow shows how to set up NetLogo and run [BehaviorSpace](https://docs.netlogo.org/behaviorspace.html) experiments in [headless](https://docs.netlogo.org/behaviorspace.html#running-from-the-command-line) mode. Experiment results are saved as [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) files and uploaded as artifacts for later retrieval. This approach is useful for automating simulation runs, conducting parameter sweeps, or integrating NetLogo experiments into data analysis pipelines.
 
 You can view this workflow in action on the repository's [actions page](https://github.com/danielvartan/netlogo-actions/actions). The complete workflow file is available [here](.github/workflows/run-experiment.yaml).
 
@@ -92,15 +90,18 @@ jobs:
       - name: Create artifacts directory
         run: |
           # Create artifacts directory
-          mkdir -p /tmp/artifacts
+
+          mkdir -p '/tmp/artifacts'
+        shell: bash
 
       - name: Run experiment
         run: |
           # Run experiment
+
           model_dir="$NETLOGO_HOME/models/Sample Models/Biology"
-          model_file="Wolf Sheep Predation.nlogox"
-          experiment_name="Wolf Sheep Crossing"
-          table_file="/tmp/artifacts/experiment-table.csv"
+          model_file='Wolf Sheep Predation.nlogox'
+          experiment_name='Wolf Sheep Crossing'
+          table_file='/tmp/artifacts/experiment-table.csv'
 
           netlogo \
             --headless \
@@ -109,6 +110,7 @@ jobs:
             --table "${table_file}"
 
           cat "${table_file}"
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -149,9 +151,12 @@ jobs:
       - name: Install dependencies
         run: |
           # Install dependencies
+
           sudo apt-get update -qq
           sudo apt-get install -y -qq \
-            libfontconfig1-dev pandoc
+            libfontconfig1-dev \
+            pandoc
+          shell: bash
 
       - name: Set up NetLogo
         uses: danielvartan/netlogo-actions/setup-netlogo@v1
@@ -159,21 +164,28 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+
       - name: Check if renv is initialized
         id: renv-check
         run: |
           # Check if renv is initialized
+
           if [ -f "renv.lock" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
+        shell: bash
 
       - name: Install and initialize renv
         if: steps.renv-check.outputs.exists == 'false'
         run: |
           # Install and initialize renv
+
           install.packages("renv")
+
           renv::init()
         shell: Rscript {0}
 
@@ -181,7 +193,9 @@ jobs:
         if: steps.renv-check.outputs.exists == 'false'
         run: |
           # Install logolink
+
           renv::install("danielvartan/logolink")
+
           renv::snapshot()
         shell: Rscript {0}
 
@@ -194,7 +208,9 @@ jobs:
       - name: Render Quarto
         run: |
           # Render Quarto
+
           quarto render
+        shell: bash
 
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'
@@ -206,54 +222,6 @@ jobs:
 ```
 
 For information on workflow RAM, storage, and time limits, refer to the GitHub Actions [usage limits](https://docs.github.com/en/actions/administering-github-actions/usage-limits-billing-and-administration) page.
-
-## `check-netlogo` Reference
-
-The `check-netlogo` action automates the verification of BehaviorSpace experiments across all NetLogo models in a repository. It ensures experiments run correctly in headless mode, making it ideal for CI pipelines that need to catch model errors early.
-
-### Installation
-
-The action can be integrated into your GitHub Actions workflow simply by adding the following step:
-
-```yaml
-- name: Check NetLogo Models
-  uses: danielvartan/netlogo-actions/check-netlogo@v1
-```
-
-Before using `check-netlogo`, ensure you [check out](https://github.com/actions/checkout) the repository and set up NetLogo with the [`setup-netlogo`](#setup-netlogo-reference) action. You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests in `setup-netlogo`.
-
-### Functionality
-
-The action test NetLogo models by performing the following tasks:
-
-1. Searches the repository for NetLogo model files (`.nlogo`, `.nlogo3d`, `.nlogox`, `.nlogox3d`), excluding any paths specified in the `ignore` input.
-2. Identifies all BehaviorSpace experiments defined within each model.
-3. Executes each experiment in headless mode using NetLogo's command-line interface.
-4. Saves a table output of each experiment as an artifact (optional).
-
-Note that models with `.nlogo` and `.nlogo3d` extensions are skipped when using NetLogo 7 or higher, as these formats are deprecated in recent versions. Similarly, `.nlogox` and `.nlogox3d` files are skipped when using NetLogo 6 or lower, as these formats are not supported in earlier versions.
-
-You can view `check-netlogo` in action on the repository's [actions page](https://github.com/danielvartan/netlogo-actions/actions).
-
-### Inputs
-
-The following inputs are supported:
-
-- `ignore`: A single-quoted (!important) character string specifying paths to exclude when searching for NetLogo models. Supports glob patterns (e.g., `'models/old/**'`). Multiple paths can be separated by commas (e.g., `'models/old/**, docs/**'`). No paths are ignored by default (default: `''`).
-- `artifacts`: A single-quoted (!important) boolean value indicating whether to save experiment output tables as artifacts (default: `'true'`).
-
-Use the `with` keyword to change the default values. Example:
-
-```yaml
-- name: Check NetLogo models
-  uses: danielvartan/netlogo-actions/check-netlogo@v1
-  with:
-    ignore: 'models/old/**, docs/**'
-```
-
-### Supported Platforms
-
-This action support only `ubuntu-latest` at the moment.
 
 ## `setup-netlogo` Reference
 
@@ -268,7 +236,7 @@ The action can be integrated into your GitHub Actions workflow simply by adding 
   uses: danielvartan/netlogo-actions/setup-netlogo@v1
 ```
 
-You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests in `setup-netlogo`.
+You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests.
 
 ```yaml
 env:
@@ -281,16 +249,16 @@ This will make NetLogo available for use in subsequent steps.
 
 The action sets up a NetLogo environment by performing the following tasks:
 
-1. Downloads the specified NetLogo version.
-2. Caches the installation (optional).
-3. Sets environment variables:
-  - `NETLOGO_HOME`: Installation directory path.
-  - `NETLOGO_CONSOLE`: Console executable path.
-  - `NETLOGO_VERSION`: Installed version.
-4. Adds `NETLOGO_HOME` to `PATH`.
-5. Creates `netlogo` and `NetLogo` symlinks.
+1. Download the specified NetLogo version
+2. Cache the installation (optional)
+3. Set environment variables:
+  - `NETLOGO_HOME`: Installation directory path
+  - `NETLOGO_CONSOLE`: Console executable path
+  - `NETLOGO_VERSION`: Installed version (e.g., `7.0.3`)
+4. Add `NETLOGO_HOME` to `PATH`
+5. Create `netlogo` and `NetLogo` symlinks
 
-After the action completes, you can run NetLogo commands in subsequent steps using the `netlogo` command:
+After the action completes, you can run NetLogo commands in subsequent steps using `netlogo`:
 
 ```yaml
 - name: Test NetLogo
@@ -303,10 +271,9 @@ You can view `setup-netlogo` in action on the repository's [actions page](https:
 
 The following inputs are supported:
 
-- `version`: A single-quoted (!important) character string indicating the NetLogo version to use (e.g., `'7.0.2'`). Use `'release'` to get the latest
+- `version`: A single-quoted (!important!) character string indicating the NetLogo version to use (e.g., `'7.0.3'`). Use `'release'` to get the latest
 stable release. Only versions 6.4.0 and above are supported (default: `'release'`).
-- `architecture`: A single-quoted (!important) character string indicating the NetLogo system architecture to use. Options are `'32'` or `'64'` (default: `'64'`).
-- `cache`: A single-quoted (!important) boolean value indicating whether the NetLogo installation should be cached across runs (default: `'true'`).
+- `cache`: A single-quoted (!important!) boolean value indicating whether the NetLogo installation should be cached across runs (default: `'true'`).
 
 Use the `with` keyword to change the default values. Example:
 
@@ -315,15 +282,68 @@ Use the `with` keyword to change the default values. Example:
   uses: danielvartan/netlogo-actions/setup-netlogo@v1
   with:
     version: '6.4.0'
-    architecture: '64'
-    cache: 'true'
+    cache: 'false'
 ```
 
 ### Supported Platforms
 
-This action support only `ubuntu-latest` at the moment.
+The runners `ubuntu-latest`, `windows-latest`, and `macos-latest` are supported. We recommend using `ubuntu-latest` whenever possible.
 
-<!-- The runners `ubuntu-latest` and `windows-latest` and `macos-latest` are supported. We recommend using `ubuntu-latest` whenever possible. -->
+## `check-netlogo` Reference
+
+The `check-netlogo` action automates the verification of [BehaviorSpace](https://docs.netlogo.org/behaviorspace.html) experiments across all NetLogo models in a repository. It ensures experiments run correctly in [headless](https://docs.netlogo.org/behaviorspace.html#running-from-the-command-line) mode, making it ideal for [CI](https://en.wikipedia.org/wiki/Continuous_integration) pipelines that need to catch model errors early.
+
+### Installation
+
+The action can be integrated into your GitHub Actions workflow simply by adding the following step:
+
+```yaml
+- name: Check NetLogo models
+  uses: danielvartan/netlogo-actions/check-netlogo@v1
+```
+
+Before using `check-netlogo`, ensure you [check out](https://github.com/actions/checkout) the repository and set up NetLogo with the [`setup-netlogo`](#setup-netlogo-reference) action.
+
+You must also set the `GH_TOKEN` environment variable to enable authenticated GitHub API requests in `setup-netlogo`.
+
+```yaml
+env:
+  GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+```
+
+### Functionality
+
+The action test NetLogo models by performing the following tasks:
+
+1. Search the repository for NetLogo model files (`.nlogo`, `.nlogo3d`, `.nlogox`, `.nlogox3d`), excluding any paths specified in the `ignore` input.
+2. Identify all BehaviorSpace experiments defined within each model.
+3. Execute each experiment in headless mode using NetLogo's command-line interface.
+4. Save a table output of each experiment as an artifact (optional).
+
+Note that models with `.nlogo` and `.nlogo3d` extensions are skipped when using NetLogo 7 or higher, as these formats are deprecated in recent versions. Similarly, `.nlogox` and `.nlogox3d` files are skipped when using NetLogo 6 or lower, as these formats are not supported in earlier versions.
+
+You can view `check-netlogo` in action on the repository's [actions page](https://github.com/danielvartan/netlogo-actions/actions).
+
+### Inputs
+
+The following inputs are supported:
+
+- `ignore`: A single-quoted (!important!) character string specifying paths to exclude when searching for NetLogo models. Supports glob patterns (e.g., `'models/old/**'`). Multiple paths can be separated by commas (e.g., `'models/old/**, docs/**'`). No paths are ignored by default (default: `''`).
+- `artifacts`: A single-quoted (!important!) boolean value indicating whether to save experiment output tables as artifacts (default: `'true'`).
+
+Use the `with` keyword to change the default values. Example:
+
+```yaml
+- name: Check NetLogo models
+  uses: danielvartan/netlogo-actions/check-netlogo@v1
+  with:
+    ignore: 'models/old/**, docs/**'
+    artifacts: 'false'
+```
+
+### Supported Platforms
+
+This action supports only `ubuntu-latest` runners at the moment.
 
 ## License
 
@@ -332,7 +352,7 @@ This action support only `ubuntu-latest` at the moment.
 ```text
 Copyright (C) 2025 Daniel Vartanian
 
-netlogo-actions is free software: you can redistribute it and/or modify it
+Netlogo-Actions is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option) any
 later version.
