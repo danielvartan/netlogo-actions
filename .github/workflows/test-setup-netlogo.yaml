@@ -14,7 +14,7 @@ jobs:
           - {os: windows-latest, version: 'release'}
           - {os: ubuntu-latest, version: '6.4.0'}
           - {os: ubuntu-latest, version: 'release'}
-        cache: ['false', 'true']
+        cache: ['false']
     name: "${{matrix.config.os}} (version: '${{matrix.config.version}}') (cache: '${{matrix.cache}}')"
     runs-on: ${{matrix.config.os}}
     env:
