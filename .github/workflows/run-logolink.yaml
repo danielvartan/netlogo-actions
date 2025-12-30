@@ -51,9 +51,6 @@ jobs:
 
       - name: Set up renv
         uses: r-lib/actions/setup-renv@v2
-        with:
-          cache-version: 0
-          bypass-cache: true
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
