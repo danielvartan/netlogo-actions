@@ -1,8 +1,8 @@
 editor: source
 
 execute:
-  cache: false # Do not change!
-  freeze: false # Do not change!
+  cache: false # "Danger Will Robinson!"
+  freeze: false # If you plan to use it, remember to disable it afterward!
 
 project:
   type: website
@@ -37,7 +37,8 @@ format:
   html:
     locale: en
     language: en-us
-    code-fold: false
     code-link: true
     df-print: paged
+    fig-align: center
+    callout-appearance: simple
     repo-actions: true
