@@ -4,6 +4,8 @@ on:
 
 name: Run experiments with Quarto and logolink
 
+permissions: read-all
+
 jobs:
   run-logolink:
     name: Run experiments

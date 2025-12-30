@@ -40,13 +40,14 @@ on:
 
 name: NetLogo Check
 
+permissions: read-all
+
 jobs:
   check-netlogo:
     name: Check NetLogo models
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    permissions: read-all
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -73,13 +74,14 @@ on:
 
 name: Run BehaviorSpace experiments
 
+permissions: read-all
+
 jobs:
   run-experiments:
     name: Run experiments
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    permissions: read-all
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -134,6 +136,8 @@ on:
     branches: [main, master]
 
 name: Run experiments with Quarto and logolink
+
+permissions: read-all
 
 jobs:
   run-logolink:
@@ -327,6 +331,33 @@ Use the `with` keyword to change the default values. Example:
 
 This action supports only `ubuntu-latest` runners at the moment.
 
+## Citation
+
+If you use `LogoActions` in your work, please cite it to acknowledge the effort invested in its development and maintenance. Your citation helps support the ongoing improvement of the project.
+
+To cite `LogoActions` in publications please use the following format:
+
+Vartanian, D. (n.d.). *LogoActions: GitHub Actions for the NetLogo community* [Computer software]. <https://github.com/danielvartan/logoactions>
+
+A BibLaTeX entry for LaTeX users is:
+
+```latex
+@software{vartanian,
+  title = {LogoActions: GitHub Actions for the NetLogo community},
+  author = {Daniel Vartanian},
+  url = {https://github.com/danielvartan/logoactions},
+  note = {Computer software}
+}
+```
+
+## Contributing
+
+[![Contributor Covenant 3.0 Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-3.0-4baaaa.svg)](https://www.contributor-covenant.org/version/3/0/code_of_conduct/)
+
+Contributions are always welcome! Whether you want to report bugs, suggest new features, or help improve the code or documentation, your input makes a difference.
+
+Before opening a new issue, please check the [issues tab](https://github.com/danielvartan/logoactions/issues) to see if your topic has already been reported.
+
 ## License
 
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3-bd0000.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -347,10 +378,8 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 ```
 
-## Contributing
+## Acknowledgments
 
-[![Contributor Covenant 3.0 Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-3.0-4baaaa.svg)](https://www.contributor-covenant.org/version/3/0/code_of_conduct/)
+`LogoActions` is an independent project with no affiliation to [NetLogo](https://www.netlogo.org/) or its developers.
 
-Contributions are always welcome! Whether you want to report bugs, suggest new features, or help improve the code or documentation, your input makes a difference.
-
-Before opening a new issue, please check the [issues tab](https://github.com/danielvartan/logoactions/issues) to see if your topic has already been reported.
+`LogoActions` brand identity is based on the [NetLogo 7](https://www.netlogo.org/) brand identity.

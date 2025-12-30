@@ -4,13 +4,14 @@ on:
 
 name: Run BehaviorSpace experiments
 
+permissions: read-all
+
 jobs:
   run-experiments:
     name: Run experiments
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    permissions: read-all
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

@@ -1,4 +1,8 @@
-# v1.3.1.9000 (development version)
+# v1.3.2.9000 (development version)
+
+# v1.3.2 (2025-12-30)
+
+- Documentation now includes CITATION details. A [Zenodo](https://zenodo.org/) DOI will be created for this and future releases.
 
 # v1.3.1 (2025-12-28)
 
