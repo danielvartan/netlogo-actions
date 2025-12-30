@@ -168,25 +168,20 @@ jobs:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
-      - name: Check if renv is initialized
-        id: renv-check
+      - name: Install and initialize renv
         run: |
-          # Check if renv is initialized
+          # Install and initialize renv
 
-          if [ -f "renv.lock" ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-        shell: bash
+          install.packages("renv")
+
+          renv::init()
+        shell: Rscript {0}
 
       - name: Set up renv
-        if: steps.renv-check.outputs.exists == 'true'
         uses: r-lib/actions/setup-renv@v2
-
-      - name: Install R dependencies
-        if: steps.renv-check.outputs.exists == 'false'
-        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          cache-version: 0
+          bypass-cache: true
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
