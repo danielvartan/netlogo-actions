@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![DOI Badge](https://img.shields.io/badge/doi-10.5281/zenodo.18106150-1284C5.svg)](https://doi.org/10.5281/zenodo.18106150 )
 [![setup-netlogo](https://github.com/danielvartan/logoactions/actions/workflows/test-setup-netlogo.yaml/badge.svg)](https://github.com/danielvartan/logoactions/actions/workflows/test-setup-netlogo.yaml)
 [![check-netlogo](https://github.com/danielvartan/logoactions/actions/workflows/test-check-netlogo.yaml/badge.svg)](https://github.com/danielvartan/logoactions/actions/workflows/test-check-netlogo.yaml)
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3-bd0000.svg)](https://www.gnu.org/licenses/gpl-3.0)

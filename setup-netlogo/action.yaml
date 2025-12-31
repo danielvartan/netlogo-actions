@@ -136,7 +136,7 @@ runs:
       if: inputs.cache == 'true'
       uses: actions/cache@v4
       with:
-        path: ${{ steps.cache-path.outputs.path }}
+        path: ${{steps.cache-path.outputs.path}}
         key: "netlogo-${{steps.netlogo-version.outputs.version}}-${{runner.os}}-${{runner.arch}}"
 
     - name: Choose correct bundle for OS type
