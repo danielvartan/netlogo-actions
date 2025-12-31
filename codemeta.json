@@ -60,6 +60,10 @@
   "codeRepository": "https://github.com/danielvartan/logoactions",
   "issueTracker": "https://github.com/danielvartan/logoactions/issues",
   "runtimePlatform": "GitHub Actions",
+  "relatedLink": [
+    "https://doi.org/10.5281/zenodo.18102378",
+    "https://github.com/sponsors/danielvartan"
+  ],
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "Bash",

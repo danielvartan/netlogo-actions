@@ -352,11 +352,13 @@ This action supports only `ubuntu-latest` runners at the moment.
 
 ## Citation
 
+[![DOI Badge](https://img.shields.io/badge/doi-10.5281/zenodo.18102378-1284C5.svg)](https://doi.org/10.5281/zenodo.18102378)
+
 If you use `LogoActions` in your work, please cite it to acknowledge the effort invested in its development and maintenance. Your citation helps support the ongoing improvement of the project.
 
 To cite `LogoActions` in publications please use the following format:
 
-Vartanian, D. (n.d.). *LogoActions: GitHub Actions for the NetLogo community* [Computer software]. <https://github.com/danielvartan/logoactions>
+Vartanian, D. (n.d.). *LogoActions: GitHub Actions for the NetLogo community* [Computer software]. <https://doi.org/10.5281/zenodo.18102378>
 
 A BibLaTeX entry for LaTeX users is:
 
@@ -364,7 +366,7 @@ A BibLaTeX entry for LaTeX users is:
 @software{vartanian,
   title = {LogoActions: GitHub Actions for the NetLogo community},
   author = {Daniel Vartanian},
-  url = {https://github.com/danielvartan/logoactions},
+  doi = {10.5281/zenodo.18102378},
   note = {Computer software}
 }
 ```
