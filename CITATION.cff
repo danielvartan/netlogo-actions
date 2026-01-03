@@ -35,10 +35,22 @@ keywords:
   - Simulations
   - Workflow Automation
   - Test Automation
+preferred-citation:
+  type: software
+  title: "LogoActions: GitHub Actions for the NetLogo community"
+  authors:
+    - family-names: Vartanian
+      given-names: Daniel
+      email: danielvartan@proton.me
+      orcid: https://orcid.org/0000-0001-7782-759X
+  doi: 10.5281/zenodo.18102378
 identifiers:
   - type: doi
     value: 10.5281/zenodo.18102378
     description: Zenodo Record
-repository-code: "https://github.com/danielvartan/logoactions"
+  - type: url
+    value: https://github.com/danielvartan/logoactions
+    description: GitHub Code Repository
+repository-code: https://github.com/danielvartan/logoactions
 license: GPL-3.0-or-later
 version: 1.3.2.9000

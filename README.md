@@ -5,7 +5,9 @@
 [![DOI Badge](https://img.shields.io/badge/doi-10.5281/zenodo.18102378-1284C5.svg)](https://doi.org/10.5281/zenodo.18102378)
 [![setup-netlogo](https://github.com/danielvartan/logoactions/actions/workflows/test-setup-netlogo.yaml/badge.svg)](https://github.com/danielvartan/logoactions/actions/workflows/test-setup-netlogo.yaml)
 [![check-netlogo](https://github.com/danielvartan/logoactions/actions/workflows/test-check-netlogo.yaml/badge.svg)](https://github.com/danielvartan/logoactions/actions/workflows/test-check-netlogo.yaml)
-[![License: GPLv3](https://img.shields.io/badge/license-GPLv3-bd0000.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![FAIR checklist badge](https://img.shields.io/badge/fairsoftwarechecklist.net--00a7d9.png)](https://fairsoftwarechecklist.net/v0.2?f=21&a=32113&i=32210&r=123)
+[![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8F%20%E2%97%8B-yellow)](https://fair-software.eu)
+[![GPLv3 License Badge](https://img.shields.io/badge/license-GPLv3-bd0000.png)](https://www.gnu.org/licenses/gpl-3.0)
 [![Contributor Covenant 3.0 Code of Conduct](https://img.shields.io/badge/Contributor%20Covenant-3.0-4baaaa.svg)](https://www.contributor-covenant.org/version/3/0/code_of_conduct/)
 <!-- badges: end -->
 
@@ -40,7 +42,6 @@ on:
     branches: [main, master]
 
 name: NetLogo Check
-
 permissions: read-all
 
 jobs:
@@ -74,7 +75,6 @@ on:
     branches: [main, master]
 
 name: Run BehaviorSpace experiments
-
 permissions: read-all
 
 jobs:
@@ -137,7 +137,6 @@ on:
     branches: [main, master]
 
 name: Run experiments with Quarto and logolink
-
 permissions: read-all
 
 jobs:
@@ -378,6 +377,14 @@ A BibLaTeX entry for LaTeX users is:
 Contributions are always welcome! Whether you want to report bugs, suggest new features, or help improve the code or documentation, your input makes a difference.
 
 Before opening a new issue, please check the [issues tab](https://github.com/danielvartan/logoactions/issues) to see if your topic has already been reported.
+
+[![GitHub Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/danielvartan)
+
+You can also support the development of `LogoActions` by becoming a
+sponsor.
+
+Click [here](https://github.com/sponsors/danielvartan) to make a
+donation. Please mention `LogoActions` in your donation message.
 
 ## License
 

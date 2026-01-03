@@ -1,5 +1,7 @@
 # v1.3.2.9000 (development version)
 
+- The software now follow the [FAIR principles](https://www.go-fair.org/fair-principles/).
+
 # v1.3.2 (2025-12-30)
 
 - The *Run Experiments with Quarto and `logolink`* workflow example in the documentation was fixed.
