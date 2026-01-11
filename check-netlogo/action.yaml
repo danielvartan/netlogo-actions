@@ -66,16 +66,35 @@ runs:
       if: runner.os == 'Windows'
       run: |
         # Install dependencies (Windows)
+        # set -x
 
         choco install ripgrep -y
       shell: pwsh
 
     - name: Create artifacts directory
+      id: artifacts-dir
       run: |
         # Create artifacts directory
         # set -x
 
-        mkdir -p "${RUNNER_TEMP}/check-netlogo"
+        artifacts_dir="${RUNNER_TEMP}/check-netlogo"
+        mkdir -p "${artifacts_dir}"
+
+        case ${RUNNER_OS} in
+          "Windows")
+            artifacts_dir="${artifacts_dir}/windows"
+            ;;
+          "macOS")
+            artifacts_dir="${artifacts_dir}/macos"
+            ;;
+          "Linux")
+            artifacts_dir="${artifacts_dir}/linux"
+            ;;
+        esac
+
+        mkdir -p "${artifacts_dir}"
+
+        echo "path=${artifacts_dir}" >> "${GITHUB_OUTPUT}"
       shell: bash
 
     - name: Search for NetLogo models
@@ -140,23 +159,21 @@ runs:
       if: steps.netlogo-models.outputs.found == 'true'
       run: |
         # Run experiments
+        # set -x
+
         export JAVA_TOOL_OPTIONS="-Dcom.sun.media.jai.disableMediaLib=true"
 
-        readarray -t models <<< "${{steps.netlogo-models.outputs.models}}"
+        artifacts_dir="${{steps.artifacts-dir.outputs.path}}"
 
-        for model_file in "${models[@]}"; do
+        while IFS= read -r model_file; do
           [[ -z "${model_file}" ]] && continue
 
-          readarray -t experiments < <(
-            rg -oP '(?<=<experiment name=")[^"]+' "${model_file}"
-          )
-
-          for experiment_name in "${experiments[@]}"; do
+          while IFS= read -r experiment_name; do
             [[ -z "${experiment_name}" ]] && continue
 
             echo \
               "Running '${model_file}'" \
-              "with experiment '${experiment_name}''."
+              "with experiment '${experiment_name}'."
 
             sanitized_experiment_name=$( \
               echo "${experiment_name}" \
@@ -171,7 +188,7 @@ runs:
 
             output_file=$( \
               printf "%s/%s_%s.csv" \
-                "${RUNNER_TEMP}/check-netlogo" \
+                "${artifacts_dir}" \
                 "${sanitized_model_name}" \
                 "${sanitized_experiment_name}" \
             )
@@ -182,11 +199,11 @@ runs:
               --experiment "${experiment_name}" \
               --table "${output_file}" \
               2> >(grep -v "Could not find mediaLib accelerator")
-          done
-        done
+          done < <(rg -oP '(?<=<experiment name=")[^"]+' "${model_file}")
+        done <<< "${{steps.netlogo-models.outputs.models}}"
 
         shopt -s nullglob
-        files=("${RUNNER_TEMP}"/check-netlogo/*.csv)
+        files=("${artifacts_dir}"/*.csv)
 
         if [[ ${#files[@]} -gt 0 ]]; then
           echo "found=true" >> "${GITHUB_OUTPUT}"
@@ -207,6 +224,6 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: experiments-output
-        path: "${{runner.temp}}/check-netlogo/"
+        path: ${{steps.artifacts-dir.outputs.path}}
         retention-days: 90
         if-no-files-found: warn
