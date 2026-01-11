@@ -80,20 +80,6 @@ runs:
         artifacts_dir="${RUNNER_TEMP}/check-netlogo"
         mkdir -p "${artifacts_dir}"
 
-        case ${RUNNER_OS} in
-          "Windows")
-            artifacts_dir="${artifacts_dir}/windows"
-            ;;
-          "macOS")
-            artifacts_dir="${artifacts_dir}/macos"
-            ;;
-          "Linux")
-            artifacts_dir="${artifacts_dir}/linux"
-            ;;
-        esac
-
-        mkdir -p "${artifacts_dir}"
-
         echo "path=${artifacts_dir}" >> "${GITHUB_OUTPUT}"
       shell: bash
 
@@ -223,7 +209,7 @@ runs:
         inputs.artifacts != 'false'
       uses: actions/upload-artifact@v4
       with:
-        name: experiments-output
+        name: experiments-output-${{runner.os}}
         path: ${{steps.artifacts-dir.outputs.path}}
         retention-days: 90
         if-no-files-found: warn
