@@ -2,12 +2,12 @@ on:
   push:
     branches: [main, master]
 
-name: Run experiments with Quarto and logolink
+name: run-logolink.yaml
 permissions: read-all
 
 jobs:
   run-logolink:
-    name: Run experiments
+    name: Run experiments with Quarto and logolink
     runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{secrets.GITHUB_TOKEN}}

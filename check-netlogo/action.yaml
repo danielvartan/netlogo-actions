@@ -5,8 +5,7 @@ description: |
   BehaviorSpace experiments found in those models using the NetLogo headless
   API. It requires the repository to be checked out (via `actions/checkout@v*`)
   and NetLogo to be available on the runner (via
-  `danielvartan/logoactions/setup-netlogo@v*`). Only `ubuntu-latest`
-  runners are supported.
+  `danielvartan/logoactions/setup-netlogo@v*`).
 
   The action automatically selects the appropriate file extensions based on the
   installed NetLogo version: `.nlogo` and `.nlogo3d` for NetLogo 6 and earlier,
@@ -28,18 +27,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Check OS compatibility
-      run: |
-        # Check OS compatibility
-        # set -x
-
-        if [[ ${RUNNER_OS} != "Linux" ]]; then
-          echo "Error: This action only supports Linux runners."
-
-          exit 1
-        fi
-      shell: bash
-
     - name: Validate arguments
       run: |
         # Validate arguments
@@ -56,21 +43,39 @@ runs:
         fi
       shell: bash
 
-    - name: Install dependencies
+    - name: Install dependencies (Linux)
+      if: runner.os == 'Linux'
       run: |
-        # Install dependencies
+        # Install dependencies (Linux)
         # set -x
 
         sudo apt-get update -qq >/dev/null
         sudo apt-get install -y -qq ripgrep >/dev/null
       shell: bash
 
+    - name: Install dependencies (macOS)
+      if: runner.os == 'macOS'
+      run: |
+        # Install dependencies (macOS)
+        # set -x
+
+        brew install ripgrep
+      shell: bash
+
+    - name: Install dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        # Install dependencies (Windows)
+
+        choco install ripgrep -y
+      shell: pwsh
+
     - name: Create artifacts directory
       run: |
         # Create artifacts directory
         # set -x
 
-        mkdir -p /tmp/check-netlogo
+        mkdir -p "${RUNNER_TEMP}/check-netlogo"
       shell: bash
 
     - name: Search for NetLogo models
@@ -166,7 +171,7 @@ runs:
 
             output_file=$( \
               printf "%s/%s_%s.csv" \
-                "/tmp/check-netlogo" \
+                "${RUNNER_TEMP}/check-netlogo" \
                 "${sanitized_model_name}" \
                 "${sanitized_experiment_name}" \
             )
@@ -181,7 +186,7 @@ runs:
         done
 
         shopt -s nullglob
-        files=(/tmp/check-netlogo/*.csv)
+        files=("${RUNNER_TEMP}"/check-netlogo/*.csv)
 
         if [[ ${#files[@]} -gt 0 ]]; then
           echo "found=true" >> "${GITHUB_OUTPUT}"
@@ -202,6 +207,6 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: experiments-output
-        path: '/tmp/check-netlogo/'
+        path: "${{runner.temp}}/check-netlogo/"
         retention-days: 90
         if-no-files-found: warn

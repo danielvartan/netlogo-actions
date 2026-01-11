@@ -8,11 +8,12 @@ permissions: read-all
 jobs:
   test-setup-netlogo:
     strategy:
+      fail-fast: false
       matrix:
         config:
-          - {os: macos-latest, version: 'release'}
           - {os: windows-latest, version: '6.4.0'}
           - {os: windows-latest, version: 'release'}
+          - {os: macos-latest, version: 'release'}
           - {os: ubuntu-latest, version: '6.4.0'}
           - {os: ubuntu-latest, version: 'release'}
         cache: ['false', 'true']
